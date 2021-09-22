@@ -5,7 +5,7 @@
  * Make a browser box to ask to generate an email
  */
 
-var AskToEmail = () => {
+const AskToEmail = () => {
   var response;
   try
   {

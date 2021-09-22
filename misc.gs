@@ -4,7 +4,7 @@
  * @param {string} studentType
  * @return {number} priority
  */
-var CheckPriority = async (studentType) => {
+const CheckPriority = async (studentType) => {
   try {
       let priority = 0;    
       switch(studentType)
@@ -48,7 +48,7 @@ var CheckPriority = async (studentType) => {
   }
 }
 
-let test = async () => {
+const test = async () => {
     let studentType = "Researcher";
     let priority = await CheckPriority(studentType);
     Logger.log(`Tested Priority returns : ${priority}`);
@@ -61,7 +61,7 @@ let test = async () => {
  * @param {number} thisRow
  * @param {string} status
  */
-var ChangeRowColor = async (thisRow, status) => {
+const ChangeRowColor = async (thisRow, status) => {
     try
     {  
         let wholerow = SpreadsheetApp.getActiveSheet()

@@ -18,7 +18,7 @@ var StaffEmailAsString = async () => {
  * Staff
  * @return {[string]} staffList
  */
-var Staff = async () => {
+const Staff = async () => {
     var stafflist = SpreadsheetApp.getActiveSpreadsheet().getSheetByName("Staff List");
     var last = stafflist.getLastRow();
     var staffrange = stafflist.getRange(2, 1, last -1, 5).getValues();
@@ -61,7 +61,7 @@ var Staff = async () => {
  * Create Staff
  * @return {[string]} DSList
  */
-var CreateStaff = async () => {
+const CreateStaff = async () => {
     var DSList = [];
 
     var Cody = new DesignSpecialist('Cody', 'Cody Glen', 'codyglen@berkeley.edu');

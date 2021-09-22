@@ -3,7 +3,7 @@
  * Parse
  * @param {e} event
  */
-var Parse = async (e) => {
+const Parse = async (e) => {
   //Create array summary of student's entry.
   var values = e.namedValues;
   

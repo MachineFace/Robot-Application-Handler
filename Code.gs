@@ -45,11 +45,11 @@ const sheetDict = {
  */
 
 //Trigger 1 - On Submission
-var onFormSubmit = async (e) => { 
+const onFormSubmit = async (e) => { 
   
   //Set status to RECEIVED on new submission
-  var masterSheet = SpreadsheetApp.getActiveSpreadsheet();
-  var sheet = masterSheet.getActiveSheet();
+  const masterSheet = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = masterSheet.getActiveSheet();
 
   //Set Design Specialists : Add More here if needed
   const Cody = new DesignSpecialist('Cody', 'Cody Glen', 'codyglen@berkeley.edu');
@@ -59,7 +59,7 @@ var onFormSubmit = async (e) => {
   
   //----------------------------------------------------------------------------------------------------------------
   //Ignore Edits on background sheets
-  var thisSheetName = e.range.getSheet().getSheetName();
+  const thisSheetName = e.range.getSheet().getSheetName();
   switch (thisSheetName)
   {
     case 'Logger':
@@ -182,15 +182,15 @@ var onFormSubmit = async (e) => {
 
 //----------------------------------------------------------------------------------------------------------------
 //Trigger 2 - On Edit
-var onEdit = async (e) => { 
+const onEdit = async (e) => { 
 
-  var ss = e.range.getSheet();
-  var spreadSheet = SpreadsheetApp.getActiveSpreadsheet();
-  var thisSheetName = ss.getSheetName();
+  const ss = e.range.getSheet();
+  const spreadSheet = SpreadsheetApp.getActiveSpreadsheet();
+  const thisSheetName = ss.getSheetName();
   
   //Fetch Columns and rows and check validity
-  var thisCol = e.range.getColumn();
-  var thisRow = e.range.getRow();
+  const thisCol = e.range.getColumn();
+  const thisRow = e.range.getRow();
   Logger.log(`Column = ${thisCol}, Row = ${thisRow}, Sheet = ${thisSheetName}`);
 
   //Set Design Specialists : Add More here if needed
@@ -212,20 +212,20 @@ var onEdit = async (e) => {
   if(thisCol > 1) return;
   
   //Parse Data
-  var status = ss.getRange(thisRow,1).getValue();
-  var designspecialist = ss.getRange(thisRow,2).getValue();
-  var prioritylevel = ss.getRange(thisRow,3).getValue();
-  var timestamp = ss.getRange(thisRow,4).getValue();
-  var email = ss.getRange(thisRow,5).getValue();
-  var name = ss.getRange(thisRow,6).getValue();
-  var studentType = ss.getRange(thisRow, 7).getValue();
-  var instructorName = ss.getRange(thisRow, 8).getValue();
+  const status = ss.getRange(thisRow,1).getValue();
+  const designspecialist = ss.getRange(thisRow,2).getValue();
+  const prioritylevel = ss.getRange(thisRow,3).getValue();
+  const timestamp = ss.getRange(thisRow,4).getValue();
+  const email = ss.getRange(thisRow,5).getValue();
+  const name = ss.getRange(thisRow,6).getValue();
+  const studentType = ss.getRange(thisRow, 7).getValue();
+  const instructorName = ss.getRange(thisRow, 8).getValue();
   
-  var experiencelevel = ss.getRange(thisRow,11).getValue();
-  var projecttype = ss.getRange(thisRow,12).getValue();
-  var tools = ss.getRange(thisRow,13).getValue();
-  var toxicity = ss.getRange(thisRow,14).getValue();
-  var other = ss.getRange(thisRow,15).getValue();
+  const experiencelevel = ss.getRange(thisRow,11).getValue();
+  const projecttype = ss.getRange(thisRow,12).getValue();
+  const tools = ss.getRange(thisRow,13).getValue();
+  const toxicity = ss.getRange(thisRow,14).getValue();
+  const other = ss.getRange(thisRow,15).getValue();
   
   Logger.log(`Submission Time = ${timestamp}, Name = ${name}, Email = ${email}, Student Type = ${studentType}`);
   
