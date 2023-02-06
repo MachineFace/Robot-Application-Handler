@@ -13,29 +13,11 @@
  * =======================================================================================================================================================================
  */
 
-
-
-
 //Set Permissions - DONOTDELETE
 /**
  * @OnlyCurrentDoc
  */
  
-
-/**
- * Fetch my Gmail Alias for jacobsprojectsupport@berkeley.edu
- */
-const supportAlias = GmailApp.getAliases()[0];
-
-/**
- * Dictionary of sheets.
- */
-const sheetDict = {
-    Applications : SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Applications'),
-    StaffList : SpreadsheetApp.getActiveSpreadsheet().getSheetByName('StaffList')
-}
-
-
 
 
 /**
@@ -43,132 +25,79 @@ const sheetDict = {
  * =======================================================================================================================================================================
  * ON SUBMIT
  */
-
-//Trigger 1 - On Submission
-const onFormSubmit = async (e) => { 
+const onFormSubmit = async (e) => {
+  const writer = new WriteLogger(); 
   
-  //Set status to RECEIVED on new submission
-  const masterSheet = SpreadsheetApp.getActiveSpreadsheet();
-  const sheet = masterSheet.getActiveSheet();
+  // Set status to RECEIVED on new submission
+  const s = SpreadsheetApp.getActiveSpreadsheet();
+  const sheet = s.getActiveSheet();
 
-  //Set Design Specialists : Add More here if needed
-  const Cody = new DesignSpecialist('Cody', 'Cody Glen', 'codyglen@berkeley.edu');
-  const Chris = new DesignSpecialist('Chris', 'Chris Parsell', 'cparsell@berkeley.edu');
-  const Staff = new StudentSupervisor('Staff', 'Staff', 'jacobsprojectsupport@berkeley.edu');
-  Logger.log(`${Cody.toString()}, ${Chris.toString()}, ${Staff.toString()}`);
+  // Set Design Specialists : Add More here if needed
+  const Cody = new DesignSpecialist({ name : 'Cody', fullname : 'Cody Glen', email : 'codyglen@berkeley.edu' });
   
   //----------------------------------------------------------------------------------------------------------------
-  //Ignore Edits on background sheets
+  // Ignore Edits on background sheets
   const thisSheetName = e.range.getSheet().getSheetName();
-  switch (thisSheetName)
-  {
-    case 'Logger':
-    case 'Staff List':
+  switch (thisSheetName) {
+    case OTHERSHEETS.Logger.getSheetName():
+    case OTHERSHEETS.StaffList.getSheetName():
       return;
   }
   
-  //Loop through to get last row and set status to received
-  var searchRange = sheet.getRange(2, 6, sheet.getLastRow()).getValues();
-  var lastRow; 
-  for (var i = 0; i < searchRange.length; i++) 
-  {
-    if (searchRange[i][0].toString() == "") 
-    {
-      lastRow = i+1;
+  // Loop through to get last row and set status to received
+  const searchRange = sheet.getRange(2, 6, sheet.getLastRow()).getValues();
+  let lastRow; 
+  for (var i = 0; i < searchRange.length; i++)  {
+    if (searchRange[i][0].toString() == "") {
+      lastRow = i + 1;
       break;
     }
   }
-  sheet.getRange("A"+lastRow).setValue("Received");
-  sheet.getRange("B"+lastRow).setValue("Cody");
-  
-  
-  //----------------------------------------------------------------------------------------------------------------
-  //Parse
-  try
-  {
-    var extract = new Parse(e);
-    var name = extract.name;
-    var email = extract.email;
-    var studentType = extract.studentType;
-    var toxicity = extract.toxicity;
-    var instructor = extract.instructor;
-    
-    //Log
-    Logger.log(`Name = ${name}`);
-    Logger.log(`Email = ${email}`);
-    Logger.log(`Type = ${studentType}`);
-    Logger.log(`Toxicity = ${toxicity}`);
-    Logger.log(`PI = ${instructor}`);
-  }
-  catch(err)
-  {
-    Logger.log(err + ' : Couldnt parse data. Its all fucky.');
-  }
-  
+  SetByHeader(SHEETS.Applications, HEADERNAMES.status, lastRow, STATUS.received);
+  SetByHeader(SHEETS.Applications, HEADERNAMES.ds, lastRow, Cody.name);
+
   
   //----------------------------------------------------------------------------------------------------------------
-  //Check Student Type and set Priority
-  try
-  {
-    let priority = await CheckPriority(studentType);
-    sheet.getRange("C"+lastRow).setValue(priority);
-    switch(priority)
-    {
-      case 1:
-        sheet.getRange("C"+lastRow).setBackground('#d9ead3'); //light green
-        break;
-      case 2:
-        sheet.getRange("C"+lastRow).setBackground('#fff2cc'); //light yellow
-        break;
-      case 3:
-        sheet.getRange("C"+lastRow).setBackground('#fce5cd'); //light orange
-        break;
-      case 4:
-        sheet.getRange("C"+lastRow).setBackground('#f4cccc'); //light red
-        break;
-      case undefined:
-        break;
-    }
-  }
-  catch(err)
-  {
-    Logger.log(err + ' : Couldnt set priority');
+  const rowData = GetRowData(SHEETS.Applications, lastRow);
+  let { status, ds, priority, timestamp, email, name, affiliation, pi, experience, exp_length, purpose, tooling, toxicity, other, billing, sheetName, row } = rowData;
+  console.info(rowData);
+  
+  // ----------------------------------------------------------------------------------------------------------------
+  // Check Student Type and set Priority
+  try {
+    const p = new Priority({ studentType : affiliation });
+    const cellColor = p.cellcolor;
+    SetByHeader(SHEETS.Applications, HEADERNAMES.priority, lastRow, priority);
+    GetCellByHeader(SHEETS.Applications, HEADERNAMES.priority, lastRow).setBackground(cellColor);
+  } catch(err) {
+    writer.Error(`${err} : Couldn't set priority`);
   }
   
-  //Flag for Toxic Project
-  try
-  {
-    var columncount = sheet.getLastColumn();
-    var wholerow = sheet.getRange(lastRow, 1, 1, columncount);
-    if(toxicity == 'Yes')
-    {
-      sheet.getRange("A"+lastRow).setValue("Flagged");
-      wholerow.setBackground(null); //Unset previous color
-      wholerow.setBackground('#f4cccc');  //RED
-    }
-    else
-      wholerow.setBackground(null); //Unset previous color
-  }
-  catch(err)
-  {
-    Logger.log(err + ' : Couldnt flag project for toxic bullshit.');
+  // Flag for Toxic Project
+  try {
+    const lastcolumn = sheet.getLastColumn();
+    const wholerow = sheet.getRange(lastRow, 1, 1, lastcolumn);
+    if(toxicity == 'Yes') {
+      SetByHeader(SHEETS.Applications, HEADERNAMES.status, lastRow, STATUS.flagged);
+      wholerow.setBackground(null); // Unset previous color
+      wholerow.setBackground(COLORS.red);  // RED
+    } else wholerow.setBackground(null); // Unset previous color
+  } catch(err) {
+    writer.Error(`${err} : Couldn't flag project for toxic bullshit.`);
   }
   
-  //Response
-  var response = await new CreateMessage(name, Cody.name, Cody.link, Staff.link);
+  // Response
+  const response = await new CreateMessage({ name : name, designspecialist : Cody.name });
   
-  //Email
-  try
-  {
-    GmailApp.sendEmail(email, 'Jacobs Robot Support : Application Received', '', {
-      htmlBody:response.defaultMessage, 
-      'from':supportAlias,  
-      'bcc': '',
-      'name': "Jacobs Robot Support"} );
-  }
-  catch(err)
-  {
-    Logger.log(err + 'Couldnt email for some reason');
+  // Email
+  try {
+    GmailApp.sendEmail(email, `${SERVICENAME} : Application Received`, '', {
+      htmlBody : response.defaultMessage, 
+      'from': SUPPORTALIAS,  
+      'bcc' : '',
+      'name' : SERVICENAME} );
+  } catch(err) {
+    writer.Error(`${err} : Couldn't email for some reason`);
   }
 
 }
@@ -176,181 +105,119 @@ const onFormSubmit = async (e) => {
 
 
 
-//=======================================================================================================================================================================
-//=======================================================================================================================================================================
-//ON EDIT
-
-//----------------------------------------------------------------------------------------------------------------
-//Trigger 2 - On Edit
-const onEdit = async (e) => { 
-
-  const ss = e.range.getSheet();
-  const spreadSheet = SpreadsheetApp.getActiveSpreadsheet();
-  const thisSheetName = ss.getSheetName();
+/**
+ * =======================================================================================================================================================================
+ * =======================================================================================================================================================================
+ * ON CHANGE
+ */
+const onChange = async (e) => { 
+  const writer = new WriteLogger();
+  const thisSheetName = e.range.getSheet().getSheetName();
   
-  //Fetch Columns and rows and check validity
+  // Fetch Columns and rows and check validity
   const thisCol = e.range.getColumn();
   const thisRow = e.range.getRow();
-  Logger.log(`Column = ${thisCol}, Row = ${thisRow}, Sheet = ${thisSheetName}`);
+  writer.Info(`Column : ${thisCol}, Row : ${thisRow}, Sheet : ${thisSheetName}`);
 
-  //Set Design Specialists : Add More here if needed
-  const Cody = await new DesignSpecialist('Cody', 'Cody Glen', 'codyglen@berkeley.edu');
-  const Chris = await new DesignSpecialist('Chris', 'Chris Parsell', 'cparsell@berkeley.edu');
-  const Staff = await new StudentSupervisor('Staff', 'Staff', 'jacobsprojectsupport@berkeley.edu');
-  Logger.log(`${Cody.toString()}, ${Chris.toString()}, ${Staff.toString()}`);
+  // Set Design Specialists : Add More here if needed
+  const Cody = new DesignSpecialist({name : `Cody`, fullname : `Cody Glen`, email : `codyglen@berkeley.edu`});
   
-  //Ignore Edits on background sheets like Data Metrics and Other
-  switch (thisSheetName)
-  {
-    case 'Data Metrics':
-    case 'Other':
+  // Ignore Edits on background sheets like Data Metrics and Other
+  switch (thisSheetName) {
+    case OTHERSHEETS.Logger.getSheetName():
+    case OTHERSHEETS.StaffList.getSheetName():
       return;     
   }
 
-  //STATUS CHANGE TRIGGER
-  //Only look at Column 1 for email trigger.
+  // STATUS CHANGE TRIGGER
+  // Only look at Column 1 for email trigger.
   if(thisCol > 1) return;
+  if(thisRow == 1) return;
   
-  //Parse Data
-  const status = ss.getRange(thisRow,1).getValue();
-  const designspecialist = ss.getRange(thisRow,2).getValue();
-  const prioritylevel = ss.getRange(thisRow,3).getValue();
-  const timestamp = ss.getRange(thisRow,4).getValue();
-  const email = ss.getRange(thisRow,5).getValue();
-  const name = ss.getRange(thisRow,6).getValue();
-  const studentType = ss.getRange(thisRow, 7).getValue();
-  const instructorName = ss.getRange(thisRow, 8).getValue();
+  // Parse Data
+  const rowData = GetRowData(SHEETS.Applications, thisRow);
+  let { status, ds, priority, timestamp, email, name, affiliation, pi, experience, exp_length, purpose, tooling, toxicity, other, billing, sheetName, row } = rowData;
+  console.info(rowData);
   
-  const experiencelevel = ss.getRange(thisRow,11).getValue();
-  const projecttype = ss.getRange(thisRow,12).getValue();
-  const tools = ss.getRange(thisRow,13).getValue();
-  const toxicity = ss.getRange(thisRow,14).getValue();
-  const other = ss.getRange(thisRow,15).getValue();
-  
-  Logger.log(`Submission Time = ${timestamp}, Name = ${name}, Email = ${email}, Student Type = ${studentType}`);
-  
-  //Fix empty variables
-  if(designspecialist == "") designspecialist = "a Design Specialist";
-
+  // ----------------------------------------------------------------------------------------------------------------
+  // Change colors of row based on Status
+  new Colorizer({ rowNumber : thisRow, status : status });
   
   //----------------------------------------------------------------------------------------------------------------
-  //Change colors of row based on Status
-  var color = ChangeRowColor(thisRow, status);
-  
-  //----------------------------------------------------------------------------------------------------------------
-  //Auto-Reject for toxicity
-  try
-  {
-    if(toxicity == 'Yes') ss.getRange(thisRow,1).setValue("Rejected");
-  }
-  catch(err)
-  {
-    Logger.log(err + 'Couldnt reject toxic project for some reason');
+  // Auto-Reject for toxicity
+  try {
+    if(toxicity == `Yes`) {
+      SetByHeader(SHEETS.Applications, HEADERNAMES.status, thisRow, STATUS.rejected);
+    }
+  } catch(err) {
+    writer.Error(`${err} : Couldn't reject toxic project for some reason...`);
   }
   
   
   //----------------------------------------------------------------------------------------------------------------
-  //Check Student Type and set Priority
-
-  let priority = await CheckPriority(studentType);
-  Logger.log(`Priority from Async = ${priority}`);
-
-  ss.getRange(thisRow, 3).setValue(priority);
-  switch(priority)
-  {
-    case 1:
-      ss.getRange(thisRow, 3).setBackground('#d9ead3'); //light green
-      break;
-    case 2:
-      ss.getRange(thisRow, 3).setBackground('#fff2cc'); //light yellow
-      break;
-    case 3:
-      ss.getRange(thisRow, 3).setBackground('#fce5cd'); //light orange
-      break;
-    case 4:
-      ss.getRange(thisRow, 3).setBackground('#f4cccc'); //light red
-      break;
-    case undefined:
-      break;
-  }
-
-  
-  
-  
-  //----------------------------------------------------------------------------------------------------------------
-  //Case switch for different Design Specialists email
-  var designspecialistemaillink;
-  var designspecialistemail;
-  switch(designspecialist)
-  {
-    case "Chris":
-      designspecialistemaillink = Chris.link;
-      designspecialistemail = Chris.email;
-      break;
-    case "Cody":
-      designspecialistemaillink = Cody.link;
-      designspecialistemail = Cody.email;
-      break;
-    case "Staff":
-      designspecialistemaillink = Staff.link;
-      designspecialistemail = Staff.email;
-      break;
-    case undefined:
-      designspecialistemaillink = Staff.link;
-      designspecialistemail = Staff.email;
-      break;
-    case "a Design Specialist":
-      designspecialistemaillink = Staff.link;
-      designspecialistemail = Staff.email;
-      break;
+  // Check Student Type and set Priority
+  try {
+    if(!priority) {
+      const p = new Priority({ studentType : studentType });
+      const newPriority = p.priority;
+      const cellColor = p.cellcolor;
+      SetByHeader(SHEETS.Applications, HEADERNAMES.priority, thisRow, newPriority);
+      GetCellByHeader(SHEETS.Applications, HEADERNAMES.priority, thisRow)
+        .setBackground(cellColor);
+    }
+  } catch(err) {
+    writer.Error(`${err} : Couldn't set priority for some reason...`);
   }
   
+  // Fix DS if missing
+  ds = ds ? ds : Cody.name;
   
-  //Create a message
-  var Message = await new CreateMessage(name, designspecialist, designspecialistemaillink, Staff.link)
   
-  //Send email with appropriate response
-  try
-  {
-    switch(status)
-    {
-      case "Received":
-          await GmailApp.sendEmail(email, 'Jacobs Robot Support : Application Received', '', {
-            htmlBody: Message.receivedMessage, 
-            'from':supportAlias, 
-            'cc': '',
-            'bcc': '',
-            'name': 'Jacobs Robot Support'});
-          Logger.log(Message.acceptedMessage);
-          break;
-      case "Accepted":
-          await GmailApp.sendEmail(email, 'Jacobs Robot Support : Application Accepted', '', {
-            htmlBody: Message.acceptedMessage, 
-            'from':supportAlias, 
-            'cc': '',
-            'bcc': '',
-            'name': 'Jacobs Robot Support'});
-          Logger.log(Message.acceptedMessage);
-          break;
-      case "Rejected":
- 
-          await GmailApp.sendEmail(email, 'Jacobs Robot Support : Application Declined', '', {
-            htmlBody: Message.rejectedMessage, 
-            'from':supportAlias, 
-            'cc': '',
-            'bcc': '',
-            'name': 'Jacobs Robot Support'});
-          Logger.log(Message.rejectedMessage);
-          break; 
+  // Create a message
+  const Message = await new CreateMessage({ name : name, designspecialist : ds });
+  
+  // Send email with appropriate response
+  try {
+    switch(status) {
+      case STATUS.received:
+        await GmailApp.sendEmail(email, `${SERVICENAME} : Application Received`, '', {
+          htmlBody : Message.receivedMessage, 
+          'from' : SUPPORTALIAS, 
+          'cc' : '',
+          'bcc' : '',
+          'name' : SERVICENAME});
+        writer.Warning(`Student: ${name} has been emailed ${STATUS.received} message.`);
+        break;
+      case STATUS.accepted:
+        await GmailApp.sendEmail(email, `${SERVICENAME} : Application Accepted`, '', {
+          htmlBody : Message.acceptedMessage, 
+          'from' : SUPPORTALIAS, 
+          'cc' : '',
+          'bcc' : '',
+          'name' : SERVICENAME});
+        writer.Warning(`Student: ${name} has been emailed ${STATUS.accepted} message.`);
+        break;
+      case STATUS.rejected:
+        await GmailApp.sendEmail(email, `${SERVICENAME} : Application Declined`, '', {
+          htmlBody : Message.rejectedMessage, 
+          'from' : SUPPORTALIAS, 
+          'cc' : '',
+          'bcc' : '',
+          'name': SERVICENAME});
+        writer.Warning(`Student: ${name} has been emailed ${STATUS.rejected} message.`);
+        break; 
       case "":
       case undefined:
         break;
     }
+  } catch(err) {
+    writer.Error(`${err} : Couldn't send email on status update for some reason.....`);
   }
-  catch(err)
-  {
-    Logger.log(err + 'Couldnt send email on status update for some reason.');
-  }
+
+  // Check Color Again
+  
+  const stat = GetByHeader(SHEETS.Applications, HEADERNAMES.status, thisRow);
+  new Colorizer({ rowNumber : thisRow, status : stat });
   
 }
 
