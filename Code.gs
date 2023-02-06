@@ -120,7 +120,7 @@ const onChange = async (e) => {
   writer.Info(`Column : ${thisCol}, Row : ${thisRow}, Sheet : ${thisSheetName}`);
 
   // Set Design Specialists : Add More here if needed
-  const Cody = new DesignSpecialist({name : `Cody`, fullname : `Cody Glen`, email : `codyglen@berkeley.edu`});
+  const Cody = new DesignSpecialist({ name : `Cody`, fullname : `Cody Glen`, email : `codyglen@berkeley.edu` });
   
   // Ignore Edits on background sheets like Data Metrics and Other
   switch (thisSheetName) {
