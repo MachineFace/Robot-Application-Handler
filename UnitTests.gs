@@ -15,6 +15,7 @@ const _gasTMainTesting = async () => {
   
   await test(`Priority Test`, (t) => {
     const a = new Priority({ studentType : STUDENT_TYPES.general_students }).priority;
+    t.equal(a instanceof Priority, true, `Instance of priority class: ${a instanceof Priority}`)
     t.equal(a, 4, `Expected: 4, Actual: ${a}`);
     const b = new Priority({ studentType : STUDENT_TYPES.mdes_student }).priority;
     t.equal(b, 1, `Expected: 1, Actual: ${b}`);

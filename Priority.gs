@@ -77,11 +77,6 @@ const _testPriority = () => {
   new Priority({ studentType : STUDENT_TYPES.innovation_catalyst, })
   new Priority({ studentType : STUDENT_TYPES.desinv_student, })
   console.timeEnd(`Priority`);
-  // let p1 = GetPriority(`laxbop@berkeley.edu`,3036051329) // Good Email and Good SID
-  // let p2 = GetPriority(`laxbop@berkeley.edu`, 12938749123) // Good Email, Bad SID
-  // let p3 = GetPriority(`ding@bat.edu`, 3036051329) // Bad Email, Good SID
-  // let p4 = GetPriority(`ding@bat.edu`, 2394872349587) // Bad Email, Bad SID
-
 }
 
 

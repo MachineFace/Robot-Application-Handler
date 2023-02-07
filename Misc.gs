@@ -1,3 +1,40 @@
+
+
+/**
+ * Search all Sheets for a value
+ * @required {string} value
+ * @returns {[sheet, [values]]} list of sheets with lists of indexes
+ */
+const Search = (value) => {
+  if (value) value.toString().replace(/\s+/g, "");
+  let res = {};
+  Object.values(SHEETS).forEach(sheet => {
+    const finder = sheet.createTextFinder(value).findAll();
+    if (finder != null) {
+      temp = [];
+      finder.forEach(result => temp.push(result.getRow()));
+      res[sheet.getName()] = temp;
+    }
+  })
+  console.info(JSON.stringify(res));
+  return res;
+}
+
+/**
+ * Search a Specific Sheets for a value
+ * @required {string} value
+ * @returns {[sheet, [values]]} list of sheets with lists of indexes
+ */
+const SearchSpecificSheet = (sheet, value) => {
+  if(typeof sheet != `object`) return 1;
+  if (value) value.toString().replace(/\s+/g, "");
+  const finder = sheet.createTextFinder(value).findNext();
+  if (finder != null) {
+    return finder.getRow();
+  } else return false;
+}
+
+
 /**
  * ----------------------------------------------------------------------------------------------------------------
  * Return the value of a cell by column name and row number
@@ -28,6 +65,7 @@ const GetByHeader = (sheet, columnName, row) => {
  * @param {sheet} sheet
  * @param {string} colName
  * @param {number} row
+ * @returns {array} column data, or 1 if fail. 
  */
 const GetColumnDataByHeader = (sheet, columnName) => {
   if(typeof sheet != `object`) return 1;
@@ -89,6 +127,7 @@ const GetRowData = (sheet, row) => {
  * @param {string} colName
  * @param {number} row
  * @param {any} val
+ * @returns {number} 0 if valid, 1 if fail.
  */
 const SetByHeader = (sheet, columnName, row, val) => {
   if(typeof sheet != `object`) return 1;
@@ -107,6 +146,15 @@ const SetByHeader = (sheet, columnName, row, val) => {
   }
 };
 
+/**
+ * 
+ * Get Cell By Header
+ * Returns the cell object when data is found
+ * @param {sheet} sheet
+ * @param {string} columnName
+ * @param {number} row
+ * @return {cell} cell
+ */
 const GetCellByHeader = (sheet, columnName, row) => {
   if(typeof sheet != `object`) return 1;
   let data;
@@ -139,6 +187,144 @@ const FindOne = (value) => {
     }
   }
   return res;
+}
+
+
+/**
+ * ----------------------------------------------------------------------------------------------------------------
+ * Find some data in the column
+ * @param {spreadsheet} sheet
+ * @param {string} column
+ * @param {any} data
+ * @returns {int} indexes
+ */
+const FindDataInColumn = (sheet, column, data) => {
+  let indexes = [];
+  let values = sheet.getRange(column + ":" + column).getValues(); // like A:A
+  let row = 2;
+
+  while (values[row] && values[row][0] !== data) row++;
+  if (values[row][0] === data) indexes.push(row + 1);
+  else return -1;
+  return indexes;
+};
+
+
+/**
+ * ----------------------------------------------------------------------------------------------------------------
+ * Find some data in the row
+ * @param {spreadsheet} sheet
+ * @param {any} data
+ * @returns {[int]} column indexes
+ */
+const FindDataInRow = (sheet, data) => {
+  let indexes = [];
+  let rows = sheet.getDataRange.getValues();
+
+  //Loop through all the rows and return a matching index
+  for (let r = 1; r < rows.length; r++) {
+    let index = rows[r].indexOf(data) + 1;
+    indexes.push(index);
+  }
+  return indexes;
+};
+
+
+
+
+/**
+ * ----------------------------------------------------------------------------------------------------------------
+ * Find an index in an array
+ * @param {any} search
+ * @returns {int} index
+ */
+Array.prototype.findIndex = (search) => {
+  if (search == "") return false;
+  for (let i = 0; i < this.length; i++)
+    if (this[i].toString().indexOf(search) > -1) return i;
+  return -1;
+};
+
+/**
+ * ----------------------------------------------------------------------------------------------------------------
+ * Test if value is a date and return true or false
+ * @param {date} d
+ * @returns {boolean} b
+ */
+const isValidDate = (d) => {
+  if (Object.prototype.toString.call(d) !== "[object Date]") return false;
+  return !isNaN(d.getTime());
+};
+
+/**
+ * Convert Datetime to Date
+ * @param {date} d
+ * @return {date} date
+ */
+const datetimeToDate = (d) => new Date(d.getYear(), d.getMonth(), d.getDate());
+
+/**
+ * Check if this sheet is forbidden
+ * @param {sheet} sheet to check
+ * @returns {bool} false if sheet is allowed
+ * @returns {bool} true if forbidden
+ */
+const CheckSheetIsForbidden = (someSheet) => {
+  someSheet = typeof someSheet == `object` ? someSheet : OTHERSHEETS.Logger;
+  let forbiddenNames = [];
+  Object.values(OTHERSHEETS).forEach( sheet => forbiddenNames.push(sheet.getName()));
+  const index = forbiddenNames.indexOf(someSheet.getName());
+  if(index == -1 || index == undefined) {
+    console.info(`Sheet is NOT FORBIDDEN : ${someSheet.getName()}`)
+    return false;
+  } else {
+    console.error(`SHEET FORBIDDEN : ${forbiddenNames[index]}`);
+    return true;
+  }
+}
+
+
+/**
+ * Find Missing Elements in Array
+ * @param {array}
+ * @param {array}
+ * @returns {array}
+ */
+const FindMissingElementsInArrays = (array1, array2) => {
+  let indexes = [];
+  array1.forEach( item => {
+    let i = array2.indexOf(item);
+    indexes.push(i);
+  })
+  return indexes;
+}
+
+/**
+ * Validate an email string
+ * @param {string} email
+ * @returns {bool} boolean
+ */
+const ValidateEmail = (email) => {
+  const regex = new RegExp(/^[a-zA-Z0-9+_.-]+@[berkeley.edu]+$/);
+  let match = regex.test(email);
+  console.warn(`Email is valid? : ${match}`)
+  return match;
+}
+
+
+/**
+ * Helper Method for TitleCasing Names
+ * @param {string} string
+ * @returns {string} titlecased
+ */
+const TitleCase = (str) => {
+  str = str
+    .toLowerCase()
+    .split(' ');
+  for (var i = 0; i < str.length; i++) {
+    str[i] = str[i].charAt(0).toUpperCase() + str[i].slice(1); 
+  }
+  return str.join(' ');
 }
 
 

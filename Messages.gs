@@ -61,8 +61,9 @@ class CreateMessage
 
 const _testMessage = () => {
   const m = new CreateMessage({ name : "Stu Dent", designspecialist : "Dirkus" });
-  console.info(m.receivedMessage);
-  console.info(m.defaultMessage);
-  console.warn(m.acceptedMessage);
-  console.error(m.rejectedMessage);
+  console.info(m instanceof CreateMessage);
+  // console.info(m.receivedMessage);
+  // console.info(m.defaultMessage);
+  // console.warn(m.acceptedMessage);
+  // console.error(m.rejectedMessage);
 }
