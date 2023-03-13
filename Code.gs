@@ -59,7 +59,7 @@ const onFormSubmit = async (e) => {
   
   //----------------------------------------------------------------------------------------------------------------
   const rowData = GetRowData(SHEETS.Applications, lastRow);
-  let { status, ds, priority, timestamp, email, name, affiliation, pi, experience, exp_length, purpose, tooling, toxicity, other, billing, sheetName, row } = rowData;
+  let { status, ds, priority, timestamp, email, name, affiliation, pi, experience, exp_length, purpose, tooling, toxicity, other, sheetName, row } = rowData;
   console.info(rowData);
   
   // ----------------------------------------------------------------------------------------------------------------
@@ -136,7 +136,7 @@ const onChange = async (e) => {
   
   // Parse Data
   const rowData = GetRowData(SHEETS.Applications, thisRow);
-  let { status, ds, priority, timestamp, email, name, affiliation, pi, experience, exp_length, purpose, tooling, toxicity, other, billing, sheetName, row } = rowData;
+  let { status, ds, priority, timestamp, email, name, affiliation, pi, experience, exp_length, purpose, tooling, toxicity, other, sheetName, row } = rowData;
   console.info(rowData);
   
   // ----------------------------------------------------------------------------------------------------------------

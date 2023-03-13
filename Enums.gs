@@ -37,7 +37,6 @@ const HEADERNAMES = {
   tooling : `What kinds of end-effectors do you intend on putting on the robots? Are you buying the tools or are you building a custom tool? Does your tooling need additional support ( Air / Power / Data)?`,	
   toxicity : `Is your project or process inherently messy, toxic, noxious, or otherwise unhealthy and would require additional support systems for the health and safety of those who work at the Jacobs Institute?`,
   other : `Any additional extenuating circumstances, or other considerations not covered in the above questions, that you feel are important to address?`,
-  billing : `Generate a Bill on Shopify`,
 }
 
 /**

@@ -20,6 +20,7 @@ const Search = (value) => {
   return res;
 }
 
+
 /**
  * Search a Specific Sheets for a value
  * @required {string} value
@@ -118,8 +119,6 @@ const GetRowData = (sheet, row) => {
 }
 
 
-
-
 /**
  * ----------------------------------------------------------------------------------------------------------------
  * Set the value of a cell by column name and row number
@@ -145,6 +144,7 @@ const SetByHeader = (sheet, columnName, row, val) => {
     return 1;
   }
 };
+
 
 /**
  * 
@@ -230,8 +230,6 @@ const FindDataInRow = (sheet, data) => {
 };
 
 
-
-
 /**
  * ----------------------------------------------------------------------------------------------------------------
  * Find an index in an array
@@ -245,6 +243,7 @@ Array.prototype.findIndex = (search) => {
   return -1;
 };
 
+
 /**
  * ----------------------------------------------------------------------------------------------------------------
  * Test if value is a date and return true or false
@@ -256,12 +255,14 @@ const isValidDate = (d) => {
   return !isNaN(d.getTime());
 };
 
+
 /**
  * Convert Datetime to Date
  * @param {date} d
  * @return {date} date
  */
 const datetimeToDate = (d) => new Date(d.getYear(), d.getMonth(), d.getDate());
+
 
 /**
  * Check if this sheet is forbidden
@@ -298,6 +299,7 @@ const FindMissingElementsInArrays = (array1, array2) => {
   })
   return indexes;
 }
+
 
 /**
  * Validate an email string

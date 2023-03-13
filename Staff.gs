@@ -183,7 +183,7 @@ const _testStaff = () => {
   for(const [name, values] of Object.entries(staff)) {
     console.info(`${name} ----> First Name :${values.name}, Full : ${values.fullname} ~~ ${JSON.stringify(values)}`)
   }
-  const cody = staff["Cody"];
+  const cody = staff.Cody;
   console.info(cody)
 }
 
