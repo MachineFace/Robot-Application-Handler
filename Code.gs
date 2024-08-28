@@ -26,7 +26,6 @@
  * ON SUBMIT
  */
 const onFormSubmit = async (e) => {
-  const writer = new WriteLogger(); 
   
   // Set status to RECEIVED on new submission
   const s = SpreadsheetApp.getActiveSpreadsheet();
@@ -70,7 +69,7 @@ const onFormSubmit = async (e) => {
     SetByHeader(SHEETS.Applications, HEADERNAMES.priority, lastRow, priority);
     GetCellByHeader(SHEETS.Applications, HEADERNAMES.priority, lastRow).setBackground(cellColor);
   } catch(err) {
-    writer.Error(`${err} : Couldn't set priority`);
+    Log.Error(`${err} : Couldn't set priority`);
   }
   
   // Flag for Toxic Project
@@ -83,7 +82,7 @@ const onFormSubmit = async (e) => {
       wholerow.setBackground(COLORS.red);  // RED
     } else wholerow.setBackground(null); // Unset previous color
   } catch(err) {
-    writer.Error(`${err} : Couldn't flag project for toxic bullshit.`);
+    Log.Error(`${err} : Couldn't flag project for toxic bullshit.`);
   }
   
   // Response
@@ -91,13 +90,13 @@ const onFormSubmit = async (e) => {
   
   // Email
   try {
-    GmailApp.sendEmail(email, `${SERVICENAME} : Application Received`, '', {
+    MailApp.sendEmail(email, `${SERVICE_NAME} : Application Received`, '', {
       htmlBody : response.defaultMessage, 
-      'from': SUPPORTALIAS,  
+      'from': SERVICE_EMAIL,  
       'bcc' : '',
-      'name' : SERVICENAME} );
+      'name' : SERVICE_NAME });
   } catch(err) {
-    writer.Error(`${err} : Couldn't email for some reason`);
+    Log.Error(`${err} : Couldn't email for some reason`);
   }
 
 }
@@ -111,13 +110,12 @@ const onFormSubmit = async (e) => {
  * ON CHANGE
  */
 const onChange = async (e) => { 
-  const writer = new WriteLogger();
   const thisSheetName = e.range.getSheet().getSheetName();
   
   // Fetch Columns and rows and check validity
   const thisCol = e.range.getColumn();
   const thisRow = e.range.getRow();
-  writer.Info(`Column : ${thisCol}, Row : ${thisRow}, Sheet : ${thisSheetName}`);
+  Log.Info(`Column : ${thisCol}, Row : ${thisRow}, Sheet : ${thisSheetName}`);
 
   // Set Design Specialists : Add More here if needed
   const Cody = new DesignSpecialist({ name : `Cody`, fullname : `Cody Glen`, email : `codyglen@berkeley.edu` });
@@ -150,7 +148,7 @@ const onChange = async (e) => {
       SetByHeader(SHEETS.Applications, HEADERNAMES.status, thisRow, STATUS.rejected);
     }
   } catch(err) {
-    writer.Error(`${err} : Couldn't reject toxic project for some reason...`);
+    Log.Error(`${err} : Couldn't reject toxic project for some reason...`);
   }
   
   
@@ -166,7 +164,7 @@ const onChange = async (e) => {
         .setBackground(cellColor);
     }
   } catch(err) {
-    writer.Error(`${err} : Couldn't set priority for some reason...`);
+    Log.Error(`${err} : Couldn't set priority for some reason...`);
   }
   
   // Fix DS if missing
@@ -180,38 +178,38 @@ const onChange = async (e) => {
   try {
     switch(status) {
       case STATUS.received:
-        await GmailApp.sendEmail(email, `${SERVICENAME} : Application Received`, '', {
+        await MailApp.sendEmail(email, `${SERVICE_NAME} : Application Received`, '', {
           htmlBody : Message.receivedMessage, 
-          'from' : SUPPORTALIAS, 
+          'from' : SERVICE_EMAIL, 
           'cc' : '',
           'bcc' : '',
-          'name' : SERVICENAME});
-        writer.Warning(`Student: ${name} has been emailed ${STATUS.received} message.`);
+          'name' : SERVICE_NAME});
+        Log.Warning(`Student: ${name} has been emailed ${STATUS.received} message.`);
         break;
       case STATUS.accepted:
-        await GmailApp.sendEmail(email, `${SERVICENAME} : Application Accepted`, '', {
+        await MailApp.sendEmail(email, `${SERVICE_NAME} : Application Accepted`, '', {
           htmlBody : Message.acceptedMessage, 
-          'from' : SUPPORTALIAS, 
+          'from' : SERVICE_EMAIL, 
           'cc' : '',
           'bcc' : '',
-          'name' : SERVICENAME});
-        writer.Warning(`Student: ${name} has been emailed ${STATUS.accepted} message.`);
+          'name' : SERVICE_NAME});
+        Log.Warning(`Student: ${name} has been emailed ${STATUS.accepted} message.`);
         break;
       case STATUS.rejected:
-        await GmailApp.sendEmail(email, `${SERVICENAME} : Application Declined`, '', {
+        await MailApp.sendEmail(email, `${SERVICE_NAME} : Application Declined`, '', {
           htmlBody : Message.rejectedMessage, 
-          'from' : SUPPORTALIAS, 
+          'from' : SERVICE_EMAIL, 
           'cc' : '',
           'bcc' : '',
-          'name': SERVICENAME});
-        writer.Warning(`Student: ${name} has been emailed ${STATUS.rejected} message.`);
+          'name': SERVICE_NAME});
+        Log.Warning(`Student: ${name} has been emailed ${STATUS.rejected} message.`);
         break; 
       case "":
       case undefined:
         break;
     }
   } catch(err) {
-    writer.Error(`${err} : Couldn't send email on status update for some reason.....`);
+    Log.Error(`${err} : Couldn't send email on status update for some reason.....`);
   }
 
   // Check Color Again

@@ -329,6 +329,10 @@ const TitleCase = (str) => {
   return str.join(' ');
 }
 
-
+const GetEnclosingFunctionName = () => {
+  const ex = new Error();
+  const fnName = ex.stack.split('\n')[1].split(`at `)[1];
+  return fnName;
+}
 
 

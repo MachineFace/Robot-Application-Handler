@@ -6,8 +6,8 @@
 /**
  * Fetch my Gmail Alias for jacobsprojectsupport@berkeley.edu
  */
-const SUPPORTALIAS = GmailApp.getAliases()[0];
-const SERVICENAME = `Jacobs Robot Support`;
+const SERVICE_EMAIL = `jacobs-project-support@berkeley.edu`;
+const SERVICE_NAME = `Jacobs Robot Support`;
 
 /**
  * Dictionary of sheets.

@@ -12,7 +12,8 @@ const _gasTMainTesting = async () => {
     eval(UrlFetchApp.fetch('https://raw.githubusercontent.com/huan/gast/master/src/gas-tap-lib.js').getContentText())
   } 
   const test = new GasTap();
-  
+  console.warn(`Testing: ${new Error().stack.split('\n')[1].split(`at `)[1]}`);  // Print Enclosing Function Name
+
   await test(`Priority Test`, (t) => {
     const a = new Priority({ studentType : STUDENT_TYPES.general_students }).priority;
     t.equal(a instanceof Priority, true, `Instance of priority class: ${a instanceof Priority}`)
@@ -65,7 +66,8 @@ const _gasTMessagingTesting = async () => {
     eval(UrlFetchApp.fetch('https://raw.githubusercontent.com/huan/gast/master/src/gas-tap-lib.js').getContentText())
   } 
   const test = new GasTap();
-  
+  console.warn(`Testing: ${new Error().stack.split('\n')[1].split(`at `)[1]}`);  // Print Enclosing Function Name
+
   // ------------------------------------------------------------------------------------------------------------------------------
   await test(`CreateMessage DEFAULT`, (t) => {
     const message = new CreateMessage({});
@@ -112,13 +114,13 @@ const _gasTLoggerTesting = async () => {
     eval(UrlFetchApp.fetch('https://raw.githubusercontent.com/huan/gast/master/src/gas-tap-lib.js').getContentText())
   } 
   const test = new GasTap();
+  console.warn(`Testing: ${new Error().stack.split('\n')[1].split(`at `)[1]}`);  // Print Enclosing Function Name
+  await test(`Logger`, (t) => {
 
-  await test(`WriteLogger`, (t) => {
-    const write = new WriteLogger();
-    const x = write.Warning(`Warning Test ----> Message`);
-    const y = write.Info(`Info Test ----> Message`);
-    const z = write.Error(`ERROR Test ----> Message`);
-    const w = write.Debug(`Debugging Test ----> Message`);
+    const x = Log.Warning(`Warning Test ----> Message`);
+    const y = Log.Info(`Info Test ----> Message`);
+    const z = Log.Error(`ERROR Test ----> Message`);
+    const w = Log.Debug(`Debugging Test ----> Message`);
     t.notThrow(() => x, `Warning SHOULD NOT throw error.`);
     t.notThrow(() => y, `Info SHOULD NOT throw error.`);
     t.notThrow(() => z, `Error SHOULD NOT throw error.`);
@@ -139,7 +141,8 @@ const _gasTMiscTesting = async () => {
     eval(UrlFetchApp.fetch('https://raw.githubusercontent.com/huan/gast/master/src/gas-tap-lib.js').getContentText())
   } 
   const test = new GasTap();
-  
+  console.warn(`Testing: ${new Error().stack.split('\n')[1].split(`at `)[1]}`);  // Print Enclosing Function Name
+
   // ------------------------------------------------------------------------------------------------------------------------------
   await test(`GetByHeader`, (t) => {
     const x = GetByHeader(SHEETS.Applications, HEADERNAMES.email, 2);

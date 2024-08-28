@@ -4,8 +4,7 @@
  * @param {string} email
  * @param {string} sid
  */
-class Priority
-{
+class Priority {
   constructor({
     studentType : studentType = STUDENT_TYPES.researcher,
   }) {
