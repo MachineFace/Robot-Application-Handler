@@ -104,7 +104,64 @@ const _gasTMessagingTesting = async () => {
   if (test.totalFailed() > 0) throw "Some test(s) failed!";
 }
 
+/**
+ * Test Emailer
+ */
+const _gasTEmailTesting = async () => {
+  if ((typeof GasTap) === 'undefined') { 
+    eval(UrlFetchApp.fetch('https://raw.githubusercontent.com/huan/gast/master/src/gas-tap-lib.js').getContentText())
+  } 
+  const test = new GasTap();
+  console.warn(`Testing: ${new Error().stack.split('\n')[1].split(`at `)[1]}`);  // Print Enclosing Function Name
 
+  // ------------------------------------------------------------------------------------------------------------------------------
+  await test(`Email`, async (t) => {
+    const name = `Testa Fiesta`;
+    const designspecialist = `Sporelax`;
+    const message = new CreateMessage({ name : name, designspecialist : designspecialist });
+
+    const ac = message.acceptedMessage;
+    const de = message.defaultMessage;
+    const rc = message.receivedMessage;
+    const rj = message.rejectedMessage;
+
+    const xAC = new Emailer({
+      name : name, 
+      status : STATUS.accepted,
+      email : SERVICE_EMAIL,    
+      message : ac,
+    });
+    t.notThrow(() => xAC, `ACCEPTED email SHOULD NOT throw error.`);
+
+    const xDE = new Emailer({
+      name : name, 
+      status : STATUS.pending,
+      email : SERVICE_EMAIL,    
+      message : de,
+    });
+    t.notThrow(() => xDE, `DEFAULT email SHOULD NOT throw error.`);
+
+    const xRC = new Emailer({
+      name : name, 
+      status : STATUS.received,
+      email : SERVICE_EMAIL,    
+      message : rc,
+    });
+    t.notThrow(() => xRC, `RECEIVED email SHOULD NOT throw error.`);
+
+    const xRJ = new Emailer({
+      name : name, 
+      status : STATUS.rejected,
+      email : SERVICE_EMAIL,    
+      message : rj,
+    });
+    t.notThrow(() => xRJ, `REJECTED email SHOULD NOT throw error.`);
+
+  });
+
+  await test.finish();
+  if (test.totalFailed() > 0) throw "Some test(s) failed!";
+}
 
 /**
  * Test Logger and Message with GasT

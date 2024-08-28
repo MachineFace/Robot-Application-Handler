@@ -86,15 +86,16 @@ const onFormSubmit = async (e) => {
   }
   
   // Response
-  const response = await new CreateMessage({ name : name, designspecialist : Cody.name });
+  const message = new CreateMessage({ name : name, designspecialist : Cody.name });
   
   // Email
   try {
-    MailApp.sendEmail(email, `${SERVICE_NAME} : Application Received`, '', {
-      htmlBody : response.defaultMessage, 
-      'from': SERVICE_EMAIL,  
-      'bcc' : '',
-      'name' : SERVICE_NAME });
+    new Emailer({
+      name : name, 
+      status : status,
+      email : email,    
+      message : message,
+    });
   } catch(err) {
     Log.Error(`${err} : Couldn't email for some reason`);
   }
@@ -172,48 +173,17 @@ const onChange = async (e) => {
   
   
   // Create a message
-  const Message = await new CreateMessage({ name : name, designspecialist : ds });
+  const message = new CreateMessage({ name : name, designspecialist : ds });
   
-  // Send email with appropriate response
-  try {
-    switch(status) {
-      case STATUS.received:
-        await MailApp.sendEmail(email, `${SERVICE_NAME} : Application Received`, '', {
-          htmlBody : Message.receivedMessage, 
-          'from' : SERVICE_EMAIL, 
-          'cc' : '',
-          'bcc' : '',
-          'name' : SERVICE_NAME});
-        Log.Warning(`Student: ${name} has been emailed ${STATUS.received} message.`);
-        break;
-      case STATUS.accepted:
-        await MailApp.sendEmail(email, `${SERVICE_NAME} : Application Accepted`, '', {
-          htmlBody : Message.acceptedMessage, 
-          'from' : SERVICE_EMAIL, 
-          'cc' : '',
-          'bcc' : '',
-          'name' : SERVICE_NAME});
-        Log.Warning(`Student: ${name} has been emailed ${STATUS.accepted} message.`);
-        break;
-      case STATUS.rejected:
-        await MailApp.sendEmail(email, `${SERVICE_NAME} : Application Declined`, '', {
-          htmlBody : Message.rejectedMessage, 
-          'from' : SERVICE_EMAIL, 
-          'cc' : '',
-          'bcc' : '',
-          'name': SERVICE_NAME});
-        Log.Warning(`Student: ${name} has been emailed ${STATUS.rejected} message.`);
-        break; 
-      case "":
-      case undefined:
-        break;
-    }
-  } catch(err) {
-    Log.Error(`${err} : Couldn't send email on status update for some reason.....`);
-  }
+  // Email
+  new Emailer({
+    name : name, 
+    status : status,
+    email : email,    
+    message : message,
+  });
 
   // Check Color Again
-  
   const stat = GetByHeader(SHEETS.Applications, HEADERNAMES.status, thisRow);
   new Colorizer({ rowNumber : thisRow, status : stat });
   
