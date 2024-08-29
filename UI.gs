@@ -8,7 +8,7 @@ const AskToEmail = () => {
   var response;
   try {
     response = Browser.msgBox(
-      `Generate Email`, 
+      SERVICE_NAME, 
       `Would you like to Generate an Email?`, 
       Browser.Buttons.YES_NO_CANCEL
     );

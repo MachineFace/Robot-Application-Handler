@@ -1,7 +1,6 @@
 
 
-class Colorizer
-{
+class Colorizer {
   constructor({ 
     rowNumber : rowNumber = 1, 
     status : status = STATUS.received, 

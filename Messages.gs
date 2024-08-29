@@ -82,9 +82,6 @@ class CreateMessage {
     return message;
   }
 
-  _MakeLink (email) {
-    return `<a href="${email}">${email}</a>`;
-  }
 }
 
 

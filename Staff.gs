@@ -3,12 +3,11 @@
  * ----------------------------------------------------------------------------------------------------------------
  * Class for Creating a Design Specialist Employee
  */
-class DesignSpecialist
-{
+class DesignSpecialist {
   constructor({
     name = `DS`, 
     fullname = `Design Specialist`, 
-    email = `jacobsprojectsupport@berkeley.edu`
+    email = SERVICE_EMAIL,
   }) {
     this.name = name;
     this.fullname = fullname;
@@ -39,12 +38,11 @@ class DesignSpecialist
  * SS Class - child of DS Class
  * Note: In derived classes, super() must be called before you can use 'this'. Leaving this out will cause a reference error.
  */
-class StudentSupervisor extends DesignSpecialist
-{
+class StudentSupervisor extends DesignSpecialist {
   constructor({
     name = `SS`, 
     fullname = `Student Supervisor`, 
-    email = `jacobsprojectsupport@berkeley.edu`
+    email = SERVICE_EMAIL,
   }) {
     // The reserved 'super' keyword is for making super-constructor calls and allows access to parent methods.
     super(name, fullname, email);
@@ -76,12 +74,11 @@ class StudentSupervisor extends DesignSpecialist
  * ----------------------------------------------------------------------------------------------------------------
  * Manager Class - child of DS Class
  */
-class Manager extends DesignSpecialist 
-{ 
+class Manager extends DesignSpecialist { 
   constructor({
     name = `MA`, 
     fullname = `Manager`, 
-    email = `jacobsprojectsupport@berkeley.edu`
+    email = SERVICE_EMAIL,
   }) 
   {
     super(name, fullname, email);
@@ -127,8 +124,7 @@ const StaffEmailAsString = () => {
  * -----------------------------------------------------------------------------------------------------------------
  * Class for Building Staff
  */
-class StaffBuilder
-{
+class StaffBuilder {
   constructor() {
     this.staff = {};
     this.MakeStaff();
@@ -138,37 +134,14 @@ class StaffBuilder
     const data = SHEETS.StaffList.getRange(2, 1, SHEETS.StaffList.getLastRow() -1, 5).getValues();
     data.forEach( item => {
       let name = item[0], fullname = item[1], email = item[2], emaillink = item[3], type = item[4];
-      if(type === `DS`) this.staff[name] = new DesignSpecialist({name : name, fullname : fullname, email : email});
-      if(type === `SS`) this.staff[name] = new StudentSupervisor({name : name, fullname : fullname, email : email});
-      if(type === `MA`) this.staff[name] = new Manager({name : name, fullname : fullname, email : email});
+      if(type === `DS`) this.staff[name] = new DesignSpecialist({ name : name, fullname : fullname, email : email, });
+      if(type === `SS`) this.staff[name] = new StudentSupervisor({ name : name, fullname : fullname, email : email, });
+      if(type === `MA`) this.staff[name] = new Manager({ name : name, fullname : fullname, email : email, });
     });
   }
 
   get () {
     return this.staff;
-  }
-
-  _GetRowData (row) {
-    let dict = {};
-    try {
-      let headers = SHEETS.StaffList.getRange(1, 1, 1, SHEETS.StaffList.getMaxColumns()).getValues()[0];
-      headers.forEach( (name, index) => {
-        let linkedKey = Object.keys(HEADERNAMES).find(key => HEADERNAMES[key] === name);
-        if(!linkedKey) headers[index] = name;
-        else headers[index] = linkedKey;
-      })
-      let data = SHEETS.StaffList.getRange(row, 1, 1, SHEETS.StaffList.getMaxColumns()).getValues()[0];
-      headers.forEach( (header, index) => {
-        dict[header] = data[index];
-      });
-      dict[`sheetName`] = SHEETS.StaffList.getSheetName();
-      dict[`row`] = row;
-      // console.info(dict);
-      return dict;
-    } catch (err) {
-      console.error(`${err} : GetRowData failed.... Row: ${row}`);
-      return 1;
-    }
   }
 
 }
