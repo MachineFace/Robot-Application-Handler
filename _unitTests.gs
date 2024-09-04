@@ -2,14 +2,14 @@
  * Load GasT for Testing
  * See : https://github.com/huan/gast for instructions
  */
-
+const gasT_URL = `https://raw.githubusercontent.com/huan/gast/master/src/gas-tap-lib.js`;
 
 /**
  * Test with GasT
  */
 const _gasTMainTesting = async () => {
   if ((typeof GasTap) === 'undefined') { 
-    eval(UrlFetchApp.fetch('https://raw.githubusercontent.com/huan/gast/master/src/gas-tap-lib.js').getContentText())
+    eval(UrlFetchApp.fetch(gasT_URL).getContentText());
   } 
   const test = new GasTap();
   console.warn(`Testing: ${new Error().stack.split('\n')[1].split(`at `)[1]}`);  // Print Enclosing Function Name
@@ -63,7 +63,7 @@ const _gasTMainTesting = async () => {
  */
 const _gasTMessagingTesting = async () => {
   if ((typeof GasTap) === 'undefined') { 
-    eval(UrlFetchApp.fetch('https://raw.githubusercontent.com/huan/gast/master/src/gas-tap-lib.js').getContentText())
+    eval(UrlFetchApp.fetch(gasT_URL).getContentText());
   } 
   const test = new GasTap();
   console.warn(`Testing: ${new Error().stack.split('\n')[1].split(`at `)[1]}`);  // Print Enclosing Function Name
@@ -109,7 +109,7 @@ const _gasTMessagingTesting = async () => {
  */
 const _gasTEmailTesting = async () => {
   if ((typeof GasTap) === 'undefined') { 
-    eval(UrlFetchApp.fetch('https://raw.githubusercontent.com/huan/gast/master/src/gas-tap-lib.js').getContentText())
+    eval(UrlFetchApp.fetch(gasT_URL).getContentText());
   } 
   const test = new GasTap();
   console.warn(`Testing: ${new Error().stack.split('\n')[1].split(`at `)[1]}`);  // Print Enclosing Function Name
@@ -168,7 +168,7 @@ const _gasTEmailTesting = async () => {
  */
 const _gasTLoggerTesting = async () => {
   if ((typeof GasTap) === 'undefined') { 
-    eval(UrlFetchApp.fetch('https://raw.githubusercontent.com/huan/gast/master/src/gas-tap-lib.js').getContentText())
+    eval(UrlFetchApp.fetch(gasT_URL).getContentText());
   } 
   const test = new GasTap();
   console.warn(`Testing: ${new Error().stack.split('\n')[1].split(`at `)[1]}`);  // Print Enclosing Function Name
@@ -195,7 +195,7 @@ const _gasTLoggerTesting = async () => {
  */
 const _gasTMiscTesting = async () => {
   if ((typeof GasTap) === 'undefined') { 
-    eval(UrlFetchApp.fetch('https://raw.githubusercontent.com/huan/gast/master/src/gas-tap-lib.js').getContentText())
+    eval(UrlFetchApp.fetch(gasT_URL).getContentText());
   } 
   const test = new GasTap();
   console.warn(`Testing: ${new Error().stack.split('\n')[1].split(`at `)[1]}`);  // Print Enclosing Function Name
