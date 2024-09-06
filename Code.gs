@@ -32,7 +32,7 @@ const onFormSubmit = async (e) => {
   const sheet = s.getActiveSheet();
 
   // Set Design Specialists : Add More here if needed
-  const Cody = new DesignSpecialist({ name : 'Cody', fullname : 'Cody Glen', email : 'codyglen@berkeley.edu' });
+  const Cody = new DesignSpecialist({ name : `Cody`, fullname : `Cody Glen`, email : `codyglen@berkeley.edu` });
   
   //----------------------------------------------------------------------------------------------------------------
   // Ignore Edits on background sheets

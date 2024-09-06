@@ -34,7 +34,7 @@ class Emailer {
           MailApp.sendEmail(this.email, `${SERVICE_NAME} : Application Received`, '', {
             htmlBody : this.message.receivedMessage, 
             from : SERVICE_EMAIL, 
-            bcc : SERVICE_EMAIL,
+            bcc : `codyglen@berkeley.edu`,
             name : SERVICE_NAME,
           });
           Log.Warning(`Student: ${this.name} has been emailed ${STATUS.received} message.`);
@@ -43,7 +43,7 @@ class Emailer {
           MailApp.sendEmail(this.email, `${SERVICE_NAME} : Application Accepted`, '', {
             htmlBody : this.message.acceptedMessage, 
             from : SERVICE_EMAIL, 
-            bcc : SERVICE_EMAIL,
+            bcc : `codyglen@berkeley.edu`,
             name : SERVICE_NAME,
           });
           Log.Warning(`Student: ${this.name} has been emailed ${STATUS.accepted} message.`);
@@ -52,7 +52,7 @@ class Emailer {
           MailApp.sendEmail(this.email, `${SERVICE_NAME} : Application Declined`, '', {
             htmlBody : this.message.rejectedMessage, 
             from : SERVICE_EMAIL, 
-            bcc : SERVICE_EMAIL,
+            bcc : `codyglen@berkeley.edu`,
             name : SERVICE_NAME,
           });
           Log.Warning(`Student: ${this.name} has been emailed ${STATUS.rejected} message.`);
@@ -90,7 +90,7 @@ const SendEmail = ({
     Log.Warning(`"${status}" Email sent to student and status set to "${status}".`);
     return 0;
   } catch (err) {
-    console.error(`Could not email: ${err}`);
+    console.error(`"SendEmail()" failed: ${err}`);
     return 1;
   }
 }

@@ -5,7 +5,7 @@
  * Make a browser box to ask to generate an email
  */
 const AskToEmail = () => {
-  var response;
+  let response;
   try {
     response = Browser.msgBox(
       SERVICE_NAME, 
@@ -13,8 +13,8 @@ const AskToEmail = () => {
       Browser.Buttons.YES_NO_CANCEL
     );
     console.info(response);
-    if (response == "Yes") {
-      console.warn('User clicked "Yes".');
+    if (response == `Yes`) {
+      console.warn(`User clicked "Yes".`);
       return true;
     } else return false;
   } catch(err) {
