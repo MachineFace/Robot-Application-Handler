@@ -10,18 +10,24 @@ const SERVICE_EMAIL = `jacobs-project-support@berkeley.edu`;
 const SERVICE_NAME = `Jacobs Robot Support`;
 
 /**
- * Dictionary of sheets.
+ * Main Sheets
  */
-const SHEETS = {
+const SHEETS = Object.freeze({
   Applications : SpreadsheetApp.getActiveSpreadsheet().getSheetByName(`Applications`),
-}
+});
 
-const OTHERSHEETS = {
+/**
+ * Other Sheets
+ */
+const OTHERSHEETS = Object.freeze({
   StaffList : SpreadsheetApp.getActiveSpreadsheet().getSheetByName(`Staff List`),
   Logger : SpreadsheetApp.getActiveSpreadsheet().getSheetByName(`Logger`),
-}
+});
 
-const HEADERNAMES = {
+/**
+ * Headernames
+ */
+const HEADERNAMES = Object.freeze({
   status : `(INTERNAL) Status`,	
   ds : `(INTERNAL) DS Assigned`,	
   priority : `(INTERNAL) Priority`,	
@@ -37,12 +43,12 @@ const HEADERNAMES = {
   tooling : `What kinds of end-effectors do you intend on putting on the robots? Are you buying the tools or are you building a custom tool? Does your tooling need additional support ( Air / Power / Data)?`,	
   toxicity : `Is your project or process inherently messy, toxic, noxious, or otherwise unhealthy and would require additional support systems for the health and safety of those who work at the Jacobs Institute?`,
   other : `Any additional extenuating circumstances, or other considerations not covered in the above questions, that you feel are important to address?`,
-}
+});
 
 /**
  * STATUS
  */
-const STATUS = {
+const STATUS = Object.freeze({
   received : `Received`,
   accepted : `Accepted`,
   pending : `Pending Approval`,
@@ -50,15 +56,21 @@ const STATUS = {
   rejected : `Rejected`,
   flagged : `Flagged`,
   none : `undefined`,
-}
+});
 
-const ROLES = {
+/**
+ * Roles
+ */
+const ROLES = Object.freeze({
 	DS : `Design Specialist`,
 	SS : `Student Supervisor`,
 	MA : `Manager`,
-}
+});
 
-const COLORS = {
+/**
+ * Colors
+ */
+const COLORS = Object.freeze({
   green_light : `#d9ead3`, //light green
   greenish : `#93c47d`,  //Greenish
   yellow_light : `#fff2cc`, //light yellow
@@ -69,9 +81,12 @@ const COLORS = {
   red_light : `#f4cccc`, //light red
   grey : `#cccccc`,  //Gray
   grey_light : `#efefef`, //Light Gray
-}
+});
 
-const STUDENT_TYPES = {
+/**
+ * Student Types
+ */
+const STUDENT_TYPES = Object.freeze({
   researcher : `Researcher`,
   desinv_faculty : `DES INV Faculty`,
   afil_faculty : `Jacobs-affiliated Course Faculty`,
@@ -84,12 +99,12 @@ const STUDENT_TYPES = {
   club : `Club and/or Team`,
   other : `Other: Berkeley Faculty, Berkeley Staff`,
   general_students : `General Students`,
-}
+});
 
 /**
  * RESPONSE CODES
  */
-const RESPONSECODES = {
+const RESPONSECODES = Object.freeze({
 	200 : `OK`,
 	201 : `Created`,
 	202 : `Accepted`,
@@ -156,5 +171,8 @@ const RESPONSECODES = {
 	511 : `Network Authentication Required`,
 	598 : `Network read timeout error`,
 	599 : `Network connect timeout error`,
-}
+});
+
+
+
 
