@@ -202,65 +202,65 @@ const _gasTMiscTesting = async () => {
 
   // ------------------------------------------------------------------------------------------------------------------------------
   await test(`GetByHeader`, (t) => {
-    const x = GetByHeader(SHEETS.Applications, HEADERNAMES.email, 2);
+    const x = SheetService.GetByHeader(SHEETS.Applications, HEADERNAMES.email, 2);
     t.equal(x, `codyglen@berkeley.edu`, `Should fetch my email from that sheet.`);
 
-    const y = GetByHeader(SHEETS.Applications, `BAD COLUMN NAME`, 2);
+    const y = SheetService.GetByHeader(SHEETS.Applications, `BAD COLUMN NAME`, 2);
     t.equal(y, 1, `GetByHeader SHOULD return "1": ${y}`);
 
-    const z = GetByHeader(`BAD SHEET`, HEADERNAMES.email, 2);
+    const z = SheetService.GetByHeader(`BAD SHEET`, HEADERNAMES.email, 2);
     t.equal(y, 1, `GetByHeader SHOULD return "1": ${y}`);
 
-    const a = GetByHeader(`BAD SHEET`, `BAD COLUMN NAME`, `BAD ROW NUMBER`);
+    const a = SheetService.GetByHeader(`BAD SHEET`, `BAD COLUMN NAME`, `BAD ROW NUMBER`);
     t.equal(a, 1, `GetByHeader SHOULD return "1": ${a}`);
 
   });
 
   await test(`GetColumnDataByHeader`, (t) => {
-    const x = GetColumnDataByHeader(SHEETS.Applications, HEADERNAMES.email);
+    const x = SheetService.GetColumnDataByHeader(SHEETS.Applications, HEADERNAMES.email);
     t.notEqual(x, undefined || null, `GetColumnDataByHeader SHOULD NOT return undefined or null: ${x}`);
 
-    const y = GetColumnDataByHeader(SHEETS.Applications, `BAD COLUMN NAME`);
-    t.equal(y, 1, `GetByHeader SHOULD return "1": ${y}`);
+    const y = SheetService.GetColumnDataByHeader(SHEETS.Applications, `BAD COLUMN NAME`);
+    t.equal(y, 1, `GetColumnDataByHeader SHOULD return "1": ${y}`);
 
-    const z = GetColumnDataByHeader(`BAD SHEET`, `BAD COLUMN NAME`);
-    t.equal(z, 1, `GetByHeader SHOULD return "1": ${z}`);
+    const z = SheetService.GetColumnDataByHeader(`BAD SHEET`, `BAD COLUMN NAME`);
+    t.equal(z, 1, `GetColumnDataByHeader SHOULD return "1": ${z}`);
 
   });
 
   await test(`GetRowData`, (t) => {
-    const x = GetRowData(SHEETS.Applications, 2);
+    const x = SheetService.GetRowData(SHEETS.Applications, 2);
     t.notEqual(x, undefined || null, `GetRowData SHOULD NOT return undefined or null: ${JSON.stringify(x)}`);
 
-    const y = GetRowData(SHEETS.Applications, `BAD COLUMN NAME`);
+    const y = SheetService.GetRowData(SHEETS.Applications, `BAD COLUMN NAME`);
     t.equal(y, 1, `GetRowData SHOULD return "1": ${y}`);
 
-    const z = GetRowData(`BAD SHEET`, `BAD COLUMN NAME`);
+    const z = SheetService.GetRowData(`BAD SHEET`, `BAD COLUMN NAME`);
     t.equal(z, 1, `GetRowData SHOULD return "1": ${z}`);
 
   });
 
   await test(`FindOne`, (t) => {
-    const x = FindOne(`codyglen@berkeley.edu`);
+    const x = SheetService.FindOne(`codyglen@berkeley.edu`);
     t.notEqual(x, undefined || null, `FindOne should not return undefined or null. ${JSON.stringify(x)}`);
 
-    const y = FindOne(`BAD NAME`);
+    const y = SheetService.FindOne(`BAD NAME`);
     t.equal(0, Object.entries(y).length, `FindOne SHOULD return empty object: ${JSON.stringify(y)}`);
   });
 
   await test(`SetByHeader`, (t) => {
-    const x = SetByHeader(OTHERSHEETS.Logger, `Date`, OTHERSHEETS.Logger.getLastRow(), `TESTING FUNCTIONALITY....`);
+    const x = SheetService.SetByHeader(OTHERSHEETS.Logger, `Date`, OTHERSHEETS.Logger.getLastRow(), `TESTING FUNCTIONALITY....`);
     t.notThrow(() => x, `SetByHeader SHOULD NOT throw an error. ${x}`);
     t.equal(x, 0, `SetByHeader SHOULD return "0": Actual: ${x}`);
 
-    const y = SetByHeader(`BAD SHEET`, `Date`, OTHERSHEETS.Logger.getLastRow(), `TESTING FUNCTIONALITY....`);
+    const y = SheetService.SetByHeader(`BAD SHEET`, `Date`, OTHERSHEETS.Logger.getLastRow(), `TESTING FUNCTIONALITY....`);
     t.equal(y, 1, `SetByHeader SHOULD return "1": Actual: ${y}`);
 
-    const z = SetByHeader(OTHERSHEETS.Logger, `BAD TITLE`, OTHERSHEETS.Logger.getLastRow(), `TESTING FUNCTIONALITY....`);
+    const z = SheetService.SetByHeader(OTHERSHEETS.Logger, `BAD TITLE`, OTHERSHEETS.Logger.getLastRow(), `TESTING FUNCTIONALITY....`);
     t.throws(z, `SetByHeader SHOULD throw an error on bad column name: ${z}`)
     t.equal(z, 1, `SetByHeader SHOULD return "1": Actual: ${z}`);
 
-    const a = SetByHeader(OTHERSHEETS.Logger, `Date`, -1, `TESTING FUNCTIONALITY....`);
+    const a = SheetService.SetByHeader(OTHERSHEETS.Logger, `Date`, -1, `TESTING FUNCTIONALITY....`);
     t.throws(a, `SetByHeader SHOULD throw an error on bad row number: ${a}`)
     t.equal(a, 1, `SetByHeader SHOULD return "1": Actual: ${a}`);
 

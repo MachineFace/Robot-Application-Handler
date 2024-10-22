@@ -52,12 +52,12 @@ const onFormSubmit = async (e) => {
       break;
     }
   }
-  SetByHeader(SHEETS.Applications, HEADERNAMES.status, lastRow, STATUS.received);
-  SetByHeader(SHEETS.Applications, HEADERNAMES.ds, lastRow, Cody.name);
+  SheetService.SetByHeader(SHEETS.Applications, HEADERNAMES.status, lastRow, STATUS.received);
+  SheetService.SetByHeader(SHEETS.Applications, HEADERNAMES.ds, lastRow, Cody.name);
 
   
   //----------------------------------------------------------------------------------------------------------------
-  const rowData = GetRowData(SHEETS.Applications, lastRow);
+  const rowData = SheetService.GetRowData(SHEETS.Applications, lastRow);
   let { status, ds, priority, timestamp, email, name, affiliation, pi, experience, exp_length, purpose, tooling, toxicity, other, sheetName, row } = rowData;
   console.info(rowData);
   
@@ -66,8 +66,8 @@ const onFormSubmit = async (e) => {
   try {
     const p = new Priority({ studentType : affiliation });
     const cellColor = p.cellcolor;
-    SetByHeader(SHEETS.Applications, HEADERNAMES.priority, lastRow, priority);
-    GetCellByHeader(SHEETS.Applications, HEADERNAMES.priority, lastRow).setBackground(cellColor);
+    SheetService.SetByHeader(SHEETS.Applications, HEADERNAMES.priority, lastRow, priority);
+    SheetService.GetCellByHeader(SHEETS.Applications, HEADERNAMES.priority, lastRow).setBackground(cellColor);
   } catch(err) {
     Log.Error(`${err} : Couldn't set priority`);
   }
@@ -77,7 +77,7 @@ const onFormSubmit = async (e) => {
     const lastcolumn = sheet.getLastColumn();
     const wholerow = sheet.getRange(lastRow, 1, 1, lastcolumn);
     if(toxicity == 'Yes') {
-      SetByHeader(SHEETS.Applications, HEADERNAMES.status, lastRow, STATUS.flagged);
+      SheetService.SetByHeader(SHEETS.Applications, HEADERNAMES.status, lastRow, STATUS.flagged);
       wholerow.setBackground(null); // Unset previous color
       wholerow.setBackground(COLORS.red);  // RED
     } else wholerow.setBackground(null); // Unset previous color
@@ -134,7 +134,7 @@ const onChange = async (e) => {
   if(thisRow == 1) return;
   
   // Parse Data
-  const rowData = GetRowData(SHEETS.Applications, thisRow);
+  const rowData = SheetService.GetRowData(SHEETS.Applications, thisRow);
   let { status, ds, priority, timestamp, email, name, affiliation, pi, experience, exp_length, purpose, tooling, toxicity, other, sheetName, row } = rowData;
   console.info(rowData);
   
@@ -146,7 +146,7 @@ const onChange = async (e) => {
   // Auto-Reject for toxicity
   try {
     if(toxicity == `Yes`) {
-      SetByHeader(SHEETS.Applications, HEADERNAMES.status, thisRow, STATUS.rejected);
+      SheetService.SetByHeader(SHEETS.Applications, HEADERNAMES.status, thisRow, STATUS.rejected);
     }
   } catch(err) {
     Log.Error(`${err} : Couldn't reject toxic project for some reason...`);
@@ -160,8 +160,8 @@ const onChange = async (e) => {
       const p = new Priority({ studentType : studentType });
       const newPriority = p.priority;
       const cellColor = p.cellcolor;
-      SetByHeader(SHEETS.Applications, HEADERNAMES.priority, thisRow, newPriority);
-      GetCellByHeader(SHEETS.Applications, HEADERNAMES.priority, thisRow)
+      SheetService.SetByHeader(SHEETS.Applications, HEADERNAMES.priority, thisRow, newPriority);
+      SheetService.GetCellByHeader(SHEETS.Applications, HEADERNAMES.priority, thisRow)
         .setBackground(cellColor);
     }
   } catch(err) {
@@ -184,7 +184,7 @@ const onChange = async (e) => {
   });
 
   // Check Color Again
-  const stat = GetByHeader(SHEETS.Applications, HEADERNAMES.status, thisRow);
+  const stat = SheetService.GetByHeader(SHEETS.Applications, HEADERNAMES.status, thisRow);
   new Colorizer({ rowNumber : thisRow, status : stat });
   
 }
