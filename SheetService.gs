@@ -138,7 +138,7 @@ class SheetService {
    * @param {sheet} sheet
    * @param {number} row
    * @param {JSON} data
-   * { tracking, status, issuer, timestamp, studentEmail, name, studentId, affiliation, itemBasket, dateCheckedOut, dateReturned, ticket, barcode, notes, dueDate, remainingDays, sheetName, row }
+   * { status, ds, priority, timestamp, email, name, affiliation, pi, experience, exp_length, purpose, tooling, toxicity, other, sheetName, row }
    * @returns {dict} {header, value}
    */
   static SetRowData(sheet = SHEETS.Main, row = 2, data = {}) {
