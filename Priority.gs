@@ -14,7 +14,7 @@ class Priority {
     this.cellcolor;
   }
 
-  async GetPriority () {
+  async GetPriority() {
     try {
       switch(this.studentType) {  
         case STUDENT_TYPES.researcher:

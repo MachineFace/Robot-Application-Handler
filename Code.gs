@@ -140,7 +140,7 @@ const onChange = async (e) => {
   
   // ----------------------------------------------------------------------------------------------------------------
   // Change colors of row based on Status
-  new Colorizer({ rowNumber : thisRow, status : status });
+  Colorizer.SetRowColorByStatus(SHEETS.Applications, thisRow, status);
   
   //----------------------------------------------------------------------------------------------------------------
   // Auto-Reject for toxicity
@@ -185,7 +185,7 @@ const onChange = async (e) => {
 
   // Check Color Again
   const stat = SheetService.GetByHeader(SHEETS.Applications, HEADERNAMES.status, thisRow);
-  new Colorizer({ rowNumber : thisRow, status : stat });
+  Colorizer.SetRowColorByStatus(SHEETS.Applications, thisRow, stat);
   
 }
 

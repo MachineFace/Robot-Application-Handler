@@ -1,72 +1,77 @@
 
 
 class Colorizer {
-  constructor({ 
-    rowNumber : rowNumber = 1, 
-    status : status = STATUS.received, 
-  }) {
-    this.rowNumber = rowNumber;
-    this.status = status;
-    this.wholerow = SpreadsheetApp.getActiveSheet().getRange(rowNumber, 1, 1, SpreadsheetApp.getActiveSpreadsheet().getLastColumn());
-    this.SetRowColorByStatus();
+  constructor() {
+
   }
 
-  async SetRowColorByStatus () {
+  /**
+   * Set Row Color By Status
+   * @param {sheet} sheet
+   * @param {number} row number
+   * @param {string} status
+   * @return {bool} success
+   */
+  static SetRowColorByStatus(sheet = SpreadsheetApp.getActiveSheet(), row = 2, status = STATUS.received) {
+    const lastColumn = sheet.getLastColumn();
+    const wholeRow = sheet.getRange(row, 1, 1, lastColumn);
     try {  
-      switch(this.status) {
+      switch(status) {
         case STATUS.received:
-          this.wholerow.setFontColor(null); //unset
-          this.wholerow.setBackground(null); //unset
-          console.warn(`Status: ${this.status}, Set Color to : None`);
+          wholeRow.setFontColor(null); //unset
+          wholeRow.setBackground(null); //unset
+          console.warn(`Status: ${status}, Set Color to : None`);
           break;
         case STATUS.accepted:
-          this.wholerow.setFontColor(null); //unset
-          this.wholerow.setFontColor(COLORS.greenish);  //Greenish
-          this.wholerow.setBackground(null); //unset
-          this.wholerow.setBackground(COLORS.green_light); //Light Green
-          console.warn(`Status: ${this.status}, Set Color to : Green`);
+          wholeRow.setFontColor(null); //unset
+          wholeRow.setFontColor(COLORS.greenish);  //Greenish
+          wholeRow.setBackground(null); //unset
+          wholeRow.setBackground(COLORS.green_light); //Light Green
+          console.warn(`Status: ${status}, Set Color to : Green`);
           break;
         case STATUS.pending:
-          this.wholerow.setFontColor(null); //unset
-          this.wholerow.setFontColor(COLORS.yellow_dark);  //Dark Yellow
-          this.wholerow.setBackground(null); //unset
-          this.wholerow.setBackground(COLORS.yellow_light); //Light yellow
-          console.warn(`Status: ${this.status}, Set Color to : Yellow`);
+          wholeRow.setFontColor(null); //unset
+          wholeRow.setFontColor(COLORS.yellow_dark);  //Dark Yellow
+          wholeRow.setBackground(null); //unset
+          wholeRow.setBackground(COLORS.yellow_light); //Light yellow
+          console.warn(`Status: ${status}, Set Color to : Yellow`);
           break;
         case STATUS.archived:
-          this.wholerow.setFontColor(null); //unset
-          this.wholerow.setFontColor(COLORS.grey);  //Gray
-          this.wholerow.setBackground(null); //unset
-          this.wholerow.setBackground(COLORS.grey_light); //Light Grey
-          console.warn(`Status: ${this.status}, Set Color to : Grey`);
+          wholeRow.setFontColor(null); //unset
+          wholeRow.setFontColor(COLORS.grey);  //Gray
+          wholeRow.setBackground(null); //unset
+          wholeRow.setBackground(COLORS.grey_light); //Light Grey
+          console.warn(`Status: ${status}, Set Color to : Grey`);
           break;
         case STATUS.rejected:
-          this.wholerow.setFontColor(null); //unset
-          this.wholerow.setFontColor(COLORS.red);  //Red
-          this.wholerow.setBackground(null); //unset
-          this.wholerow.setBackground(COLORS.red_light); //Light Red
-          console.warn(`Status: ${this.status}, Set Color to : Red`);
+          wholeRow.setFontColor(null); //unset
+          wholeRow.setFontColor(COLORS.red);  //Red
+          wholeRow.setBackground(null); //unset
+          wholeRow.setBackground(COLORS.red_light); //Light Red
+          console.warn(`Status: ${status}, Set Color to : Red`);
           break;
         case STATUS.flagged:
-          this.wholerow.setFontColor(null); //unset
-          this.wholerow.setFontColor(COLORS.yellow);  //yellow
-          this.wholerow.setBackground(null); //unset
-          this.wholerow.setBackground(COLORS.yellow_light); //Light yellow
-          console.warn(`Status: ${this.status}, Set Color to : Yellow`);
+          wholeRow.setFontColor(null); //unset
+          wholeRow.setFontColor(COLORS.yellow);  //yellow
+          wholeRow.setBackground(null); //unset
+          wholeRow.setBackground(COLORS.yellow_light); //Light yellow
+          console.warn(`Status: ${status}, Set Color to : Yellow`);
           break;
         case undefined:
-          this.wholerow.setBackground(null);
-          this.wholerow.setFontColor(null); //Unset Color
-          console.warn(`Status: ${this.status}, Set Color to : None`);
+          wholeRow.setBackground(null);
+          wholeRow.setFontColor(null); //Unset Color
+          console.warn(`Status: ${status}, Set Color to : None`);
           break;
         default:
-          this.wholerow.setBackground(null);
-          this.wholerow.setFontColor(null); //Unset Color
-          console.warn(`Status: ${this.status}, Set Color to : None`);
+          wholeRow.setBackground(null);
+          wholeRow.setFontColor(null); //Unset Color
+          console.warn(`Status: ${status}, Set Color to : None`);
           break;
-      }    
+      }
+      return 0;   
     } catch(err) {
       console.error(`${err} : Couldn't color rows for some reason`);
+      return 1;
     }
     
   }
@@ -78,7 +83,7 @@ class Colorizer {
  * Change Row Color
  * @param {number} thisRow
  * @param {string} status
- */
+ *
 const ChangeRowColor = async (thisRow, status) => {
   try {  
     let wholerow = SpreadsheetApp.getActiveSheet()
@@ -132,8 +137,8 @@ const ChangeRowColor = async (thisRow, status) => {
   }
   
 }
-
+*/
 
 const _testColorizer = () => {
-  const c = new Colorizer({rowNumber : 3, status : STATUS.pending});
+  Colorizer.SetRowColorByStatus(sheet, 3, STATUS.pending);
 }
