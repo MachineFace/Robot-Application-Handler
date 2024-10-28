@@ -38,7 +38,7 @@ class SheetService {
       if (col == -1) throw new Error(`Getting data by header failed.`);
       return data[row - 1][col];
     } catch (err) {
-      console.error(`"GetByHeader()" failed : ${err} @ Sheet: ${sheet} Col Name specified: ${columnName} Row: ${row}`);
+      console.error(`"GetByHeader()" failed : ${err} @ Sheet: ${sheet} Col Name: ${columnName} Row: ${row}`);
       return 1;
     }
   }
@@ -151,7 +151,7 @@ class SheetService {
         let index = sheetHeaderNames.indexOf(headername);
         values[index] = pair[1];
       });
-      console.info(values);
+      // console.info(values);
       SHEETS.Main.getRange(row, 1, 1, values.length).setValues([values]);
       sheet.appendRow(values);
       return 0;
@@ -280,8 +280,7 @@ class SheetService {
         const sheetName = sheet.getSheetName();
         const finder = sheet.createTextFinder(value).findAll();
         if (finder != null) {
-          temp = [];
-          finder.forEach(result => temp.push(result.getRow()));
+          let temp = [...finder.map(x => x.getRow())];
           res[sheetName] = temp;
         }
       })
@@ -517,39 +516,34 @@ class SheetService {
    * @private
    */
   static FillDownData(sheet, cell) {
+    try {
+      // Gets sheet's active cell and confirms it's not empty.
+      let activeCell = sheet.getActiveCell();
+      let activeCellValue = activeCell.getValue();
+      if (!activeCellValue) throw new Error("The active cell is empty. Nothing to fill.");
 
-    // Gets sheet's active cell and confirms it's not empty.
-    let activeCell = sheet.getActiveCell();
-    let activeCellValue = activeCell.getValue();
+      let column = activeCell.getColumn();
+      let row = activeCell.getRow();
 
-    if (!activeCellValue) {
-      console.info("The active cell is empty. Nothing to fill.");
-      return;
-    }
+      // Gets entire data range of the sheet.
+      let dataRange = sheet.getDataRange();
+      let dataRangeRows = dataRange.getNumRows();
 
-    // Gets coordinates of active cell.
-    let column = activeCell.getColumn();
-    let row = activeCell.getRow();
+      // Gets trimmed range starting from active cell to the end of sheet data range.
+      let searchRange = dataRange.offset(row - 1, column - 1, dataRangeRows - row + 1, 1)
+      let searchValues = searchRange.getDisplayValues();
 
-    // Gets entire data range of the sheet.
-    let dataRange = sheet.getDataRange();
-    let dataRangeRows = dataRange.getNumRows();
-
-    // Gets trimmed range starting from active cell to the end of sheet data range.
-    let searchRange = dataRange.offset(row - 1, column - 1, dataRangeRows - row + 1, 1)
-    let searchValues = searchRange.getDisplayValues();
-
-    // Find the number of empty rows below the active cell.
-    let i = 1; // Start at 1 to skip the ActiveCell.
-    while (searchValues[i] && searchValues[i][0] == "") { i++; }
-
-    // If blanks exist, fill the range with values.
-    if (i > 1) {
-      let fillRange = searchRange.offset(0, 0, i, 1).setValue(activeCellValue)
-      //sheet.setActiveRange(fillRange) // Uncomment to test affected range.
-    }
-    else {
-      console.info("There are no empty cells below the Active Cell to fill.");
+      // Find the number of empty rows below the active cell.
+      let i = 1; // Start at 1 to skip the ActiveCell.
+      while (searchValues[i] && searchValues[i][0] == "") {
+        if(i < 1) return;
+        searchRange.offset(0, 0, i, 1).setValue(activeCellValue)
+        i++; 
+      }
+      return 0;
+    } catch(err) {
+      console.error(`"FillDownData()" failed: ${err}`);
+      return 1;
     }
   }
 

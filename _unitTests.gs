@@ -203,16 +203,16 @@ const _gasTMiscTesting = async () => {
   // ------------------------------------------------------------------------------------------------------------------------------
   await test(`GetByHeader`, (t) => {
     const x = SheetService.GetByHeader(SHEETS.Applications, HEADERNAMES.email, 2);
-    t.equal(x, `codyglen@berkeley.edu`, `Should fetch my email from that sheet.`);
+    t.equal(x, `codyglen@berkeley.edu`, `GetByHeader SHOULD fetch email from that sheet. Actual: ${x}`);
 
     const y = SheetService.GetByHeader(SHEETS.Applications, `BAD COLUMN NAME`, 2);
-    t.equal(y, 1, `GetByHeader SHOULD return "1": ${y}`);
+    t.equal(y, 1, `GetByHeader SHOULD return "1". Actual: ${y}`);
 
     const z = SheetService.GetByHeader(`BAD SHEET`, HEADERNAMES.email, 2);
-    t.equal(y, 1, `GetByHeader SHOULD return "1": ${y}`);
+    t.equal(y, 1, `GetByHeader SHOULD return "1". Actual: ${y}`);
 
     const a = SheetService.GetByHeader(`BAD SHEET`, `BAD COLUMN NAME`, `BAD ROW NUMBER`);
-    t.equal(a, 1, `GetByHeader SHOULD return "1": ${a}`);
+    t.equal(a, 1, `GetByHeader SHOULD return "1". Actual: ${a}`);
 
   });
 
