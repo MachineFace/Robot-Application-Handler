@@ -3,7 +3,7 @@
 
 /**
  * ----------------------------------------------------------------------------------------------------------------
- * Design Specialist Class
+ * Message Class
  */
 class CreateMessage {
   constructor({ 
@@ -22,8 +22,10 @@ class CreateMessage {
     /** @private */
     this.salutations = `<p>Best,<br/>Jacobs Hall Staff</p>`;
     this.robot = `<br/>🤖<br/>`;
-    /** @private */
-    this.survey = `<p><small>Please help us improve ${SERVICE_NAME} by taking a moment for a brief survey:<br/><a href="https://docs.google.com/forms/d/1fICKWXj67v8k6EznXgkYz6qgiy45V8bV-X8dlRwRPDc/viewform">Take Survey</a></small></p><br/>`;
+    /** @prvate */
+    this.not_monitored = `<br/><p style="color:grey"><small>This mailbox is not monitored. Please do not reply to this automated email.</small></p>`;
+    // /** @private */
+    // this.survey = `<p><small>Please help us improve ${SERVICE_NAME} by taking a moment for a brief survey:<br/><a href="https://docs.google.com/forms/d/1fICKWXj67v8k6EznXgkYz6qgiy45V8bV-X8dlRwRPDc/viewform">Take Survey</a></small></p><br/>`;
   }
   get defaultMessage() {
     let message = this.greetings;
@@ -34,7 +36,7 @@ class CreateMessage {
         message += `</p>`;
         message += this.salutations;
         message += this.robot;
-        message += this.survey;
+        message += this.not_monitored;
     return message; 
   }
   get receivedMessage() {
@@ -46,7 +48,7 @@ class CreateMessage {
         message += `</p>`;
         message += this.salutations; 
         message += this.robot;
-        message += this.survey;
+        message += this.not_monitored;
     return message;
   }
   get acceptedMessage() {
@@ -59,7 +61,7 @@ class CreateMessage {
         message += `</p>`;
         message += this.salutations; 
         message += this.robot;
-        message += this.survey;
+        message += this.not_monitored;
     return message;
   }
   get rejectedMessage() {
@@ -78,18 +80,18 @@ class CreateMessage {
         message += `</p>`;
         message += this.salutations;
         message += this.robot;
-        message += this.survey; 
+        message += this.not_monitored;
     return message;
   }
 
 }
 
 
-// const _testMessage = () => {
-//   const m = new CreateMessage({ name : "Stu Dent", designspecialist : "Dirkus" });
-//   console.info(m instanceof CreateMessage);
-//   console.info(m.receivedMessage);
-//   console.info(m.defaultMessage);
-//   console.warn(m.acceptedMessage);
-//   console.error(m.rejectedMessage);
-// }
+const _testMessage = () => {
+  const m = new CreateMessage({ name : "Stu Dent", designspecialist : "Dirkus" });
+  console.info(m instanceof CreateMessage);
+  console.info(m.receivedMessage);
+  console.info(m.defaultMessage);
+  console.warn(m.acceptedMessage);
+  console.error(m.rejectedMessage);
+}
