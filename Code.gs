@@ -69,7 +69,7 @@ const onFormSubmit = async (e) => {
     SheetService.SetByHeader(SHEETS.Applications, HEADERNAMES.priority, lastRow, priority);
     SheetService.GetCellByHeader(SHEETS.Applications, HEADERNAMES.priority, lastRow).setBackground(cellColor);
   } catch(err) {
-    Log.Error(`${err} : Couldn't set priority`);
+    console.error(`${err} : Couldn't set priority`);
   }
   
   // Flag for Toxic Project
@@ -82,7 +82,7 @@ const onFormSubmit = async (e) => {
       wholerow.setBackground(COLORS.red);  // RED
     } else wholerow.setBackground(null); // Unset previous color
   } catch(err) {
-    Log.Error(`${err} : Couldn't flag project for toxic bullshit.`);
+    console.error(`${err} : Couldn't flag project for toxic bullshit.`);
   }
   
   // Response
@@ -97,7 +97,7 @@ const onFormSubmit = async (e) => {
       message : message,
     });
   } catch(err) {
-    Log.Error(`${err} : Couldn't email for some reason`);
+    console.error(`${err} : Couldn't email for some reason`);
   }
 
 }
@@ -149,7 +149,7 @@ const onChange = async (e) => {
       SheetService.SetByHeader(SHEETS.Applications, HEADERNAMES.status, thisRow, STATUS.rejected);
     }
   } catch(err) {
-    Log.Error(`${err} : Couldn't reject toxic project for some reason...`);
+    console.error(`${err} : Couldn't reject toxic project for some reason...`);
   }
   
   
@@ -165,7 +165,7 @@ const onChange = async (e) => {
         .setBackground(cellColor);
     }
   } catch(err) {
-    Log.Error(`${err} : Couldn't set priority for some reason...`);
+    console.error(`${err} : Couldn't set priority for some reason...`);
   }
   
   // Fix DS if missing

@@ -24,8 +24,6 @@ class CreateMessage {
     this.robot = `<br/>🤖<br/>`;
     /** @prvate */
     this.not_monitored = `<br/><p style="color:grey"><small>This mailbox is not monitored. Please do not reply to this automated email.</small></p>`;
-    // /** @private */
-    // this.survey = `<p><small>Please help us improve ${SERVICE_NAME} by taking a moment for a brief survey:<br/><a href="https://docs.google.com/forms/d/1fICKWXj67v8k6EznXgkYz6qgiy45V8bV-X8dlRwRPDc/viewform">Take Survey</a></small></p><br/>`;
   }
   get defaultMessage() {
     let message = this.greetings;
