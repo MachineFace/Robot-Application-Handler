@@ -21,7 +21,7 @@ class Log {
       this.prototype._CleanupSheet();
       return 0;
     } catch(err) {
-      console.error(`"Error()" failed : ${err}`);
+      console.error(`"Error()" failed: ${err}`);
       return 1;
     }
   }
@@ -39,7 +39,7 @@ class Log {
       this.prototype._CleanupSheet();
       return 0;
     } catch(err) {
-      console.error(`"Warning()" failed : ${err}`);
+      console.error(`"Warning()" failed: ${err}`);
       return 1;
     }
   }
@@ -57,7 +57,7 @@ class Log {
       this.prototype._CleanupSheet();
       return 0;
     } catch(err) {
-      console.error(`"Info()" failed : ${err}`);
+      console.error(`"Info()" failed: ${err}`);
       return 1;
     }
   }
@@ -75,7 +75,7 @@ class Log {
       this.prototype._CleanupSheet();
       return 0;
     } catch(err) {
-      console.error(`"Debug()" failed : ${err}`);
+      console.error(`"Debug()" failed: ${err}`);
       return 1;
     }
   }
@@ -89,7 +89,7 @@ class Log {
       if(OTHERSHEETS.Logger.getLastRow() >= 500) OTHERSHEETS.Logger.deleteRow(2);
       return 0;
     } catch(err) {
-      console.error(`"PopItem()" failed : ${err}`);
+      console.error(`"PopItem()" failed: ${err}`);
       return 1;
     }
   }
@@ -122,7 +122,7 @@ class Log {
       }
       return loggerSheet;
     } catch(err) {
-      console.error(`"_GetLoggerSheet()" failed : ${err}`);
+      console.error(`"_GetLoggerSheet()" failed: ${err}`);
       return 1;
     }
   }

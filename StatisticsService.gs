@@ -595,7 +595,7 @@ class StatisticsService {
       if(newMean == undefined) throw new Error(`Borked calc.`);
       return newMean;
     } catch(err) {
-      console.error(`"AddToMean()" failed : ${err}`);
+      console.error(`"AddToMean()" failed: ${err}`);
       return 1;
     }
   }
@@ -641,7 +641,7 @@ class StatisticsService {
       // console.warn(`ARITHMETIC MEAN: ${mean}`);
       return mean;
     } catch(err) {
-      console.error(`"ArithmeticMean()" failed : ${err}`);
+      console.error(`"ArithmeticMean()" failed: ${err}`);
       return 1;
     }
   }
@@ -664,7 +664,7 @@ class StatisticsService {
       if (p < 0 || p > 1) throw new Error("Probability must be between 0 and 1 inclusive");
       return [1 - p, p];
     } catch(err) {
-      console.error(`"BernoulliDistribution()" failed : ${err}`);
+      console.error(`"BernoulliDistribution()" failed: ${err}`);
       return 1;
     }
   }
@@ -701,7 +701,7 @@ class StatisticsService {
       }
       return cells;
     } catch(err) {
-      console.error(`"BinomialDistribution()" failed : ${err}`);
+      console.error(`"BinomialDistribution()" failed: ${err}`);
       return 1;
     }
   }
@@ -729,7 +729,7 @@ class StatisticsService {
       }
       throw new Error("maximum number of iterations exceeded");
     } catch(err) {
-      console.error(`"Bisect()" failed : ${err}`);
+      console.error(`"Bisect()" failed: ${err}`);
       return 1;
     }
   }
@@ -1436,7 +1436,7 @@ class StatisticsService {
       if (x >= 0) return inv;
       else return -inv;
     } catch(err) {
-      console.error(`"InverseErrorFunction()" failed : ${err}`);
+      console.error(`"InverseErrorFunction()" failed: ${err}`);
       return 1;
     }
   }
@@ -1484,7 +1484,7 @@ class StatisticsService {
       });
       return [ min, max, ];
     } catch(err) {
-      console.error(`"Extent()" failed : ${err}`);
+      console.error(`"Extent()" failed: ${err}`);
       return 1;
     }
   }
@@ -1513,7 +1513,7 @@ class StatisticsService {
       }
       return acc;
     } catch(err) {
-      console.error(`"Factorial()" failed : ${err}`);
+      console.error(`"Factorial()" failed: ${err}`);
       return 1;
     }
   }
@@ -1561,7 +1561,7 @@ class StatisticsService {
 
       return seriesCoefficient * seriesExpansion;
     } catch(err) {
-      console.error(`"Gamma()" failed : ${err}`);
+      console.error(`"Gamma()" failed: ${err}`);
       return 1;
     }
   }
@@ -1643,7 +1643,7 @@ class StatisticsService {
       // console.warn(`GEOMETRIC MEAN: ${geometricMean}`);
       return geometricMean;
     } catch(err) {
-      console.error(`"GeometricMean()" failed : ${err}`);
+      console.error(`"GeometricMean()" failed: ${err}`);
       return 1;
     }
   }
@@ -1701,7 +1701,7 @@ class StatisticsService {
       // console.warn(`HARMONIC MEAN: ${harmonicMean}`);
       return harmonicMean;
     } catch(err) {
-      console.error(`"HarmonicMean()" failed : ${err}`);
+      console.error(`"HarmonicMean()" failed: ${err}`);
       return 1;
     }
   }
@@ -2183,7 +2183,7 @@ class StatisticsService {
       }
       return matrix;
     } catch(err) {
-      console.error(`"Matrix()" failed : ${err}`);
+      console.error(`"Matrix()" failed: ${err}`);
       return 1;
     }
   }
@@ -2211,7 +2211,7 @@ class StatisticsService {
       // console.warn(`MEDIAN: ${median}`);
       return median;
     } catch(err) {
-      console.error(`"Median()" failed : ${err}`);
+      console.error(`"Median()" failed: ${err}`);
       return 1;
     }
   }
@@ -2321,7 +2321,7 @@ class StatisticsService {
       }
       return mode;
     } catch(err) {
-      console.error(`"Mode()" failed : ${err}`);
+      console.error(`"Mode()" failed: ${err}`);
       return 1;
     }
   }
@@ -2411,7 +2411,7 @@ class StatisticsService {
       else if (p >= 1) p = 1 - StatisticsService.Epsilon;
       return Math.sqrt(2) * StatisticsService.InverseErrorFunction(2 * p - 1);
     } catch(err) {
-      console.error(`"Probit()" failed : ${err}`);
+      console.error(`"Probit()" failed: ${err}`);
       return 1;
     }
   }
@@ -2433,7 +2433,7 @@ class StatisticsService {
       numbers.forEach(x => value *= Number(x));
       return value;
     } catch(err) {
-      console.error(`"Product()" failed : ${err}`);
+      console.error(`"Product()" failed: ${err}`);
       return 1;
     }
   }
@@ -2515,7 +2515,7 @@ class StatisticsService {
       const p = numExtremeTStats / k;
       return p;
     } catch(err) {
-      console.error(`"Permutation()" failed : ${err}`);
+      console.error(`"Permutation()" failed: ${err}`);
       return 1;
     }
   }
@@ -2556,7 +2556,7 @@ class StatisticsService {
 
       return permutations;
     } catch(err) {
-      console.error(`"Permutations_Heap()" failed : ${err}`);
+      console.error(`"Permutations_Heap()" failed: ${err}`);
       return 1;
     }
   }
@@ -2579,7 +2579,7 @@ class StatisticsService {
       // console.warn(`QUADRATIC MEAN: ${quadraticMean}`);
       return quadraticMean;
     } catch(err) {
-      console.error(`"QuadraticMean()" failed : ${err}`);
+      console.error(`"QuadraticMean()" failed: ${err}`);
       return 1;
     }
   }
@@ -3293,7 +3293,7 @@ class StatisticsService {
       else if (number === 0) return 0;
       else return 1;
     } catch(err) {
-      console.error(`"SignFunction()" failed : ${err}`);
+      console.error(`"SignFunction()" failed: ${err}`);
       return 1;
     }
   }
@@ -3452,7 +3452,7 @@ class StatisticsService {
       console.warn(`Standard Deviation: +/-${standardDeviation}`);
       return standardDeviation;
     } catch(err) {
-      console.error(`"StandardDeviation()" failed : ${err}`);
+      console.error(`"StandardDeviation()" failed: ${err}`);
       return 1;
     }
   }

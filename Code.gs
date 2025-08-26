@@ -61,28 +61,24 @@ const onFormSubmit = async (e) => {
   let { status, ds, priority, timestamp, email, name, affiliation, pi, experience, exp_length, purpose, tooling, toxicity, other, sheetName, row } = rowData;
   console.info(rowData);
   
-  // ----------------------------------------------------------------------------------------------------------------
   // Check Student Type and set Priority
   try {
-    const p = new Priority({ studentType : affiliation });
-    const cellColor = p.cellcolor;
-    SheetService.SetByHeader(SHEETS.Applications, HEADERNAMES.priority, lastRow, priority);
-    SheetService.GetCellByHeader(SHEETS.Applications, HEADERNAMES.priority, lastRow).setBackground(cellColor);
+    if(!priority) {
+      const p = new Priority({ studentType : studentType });
+      const newPriority = p.priority;
+      SheetService.SetByHeader(SHEETS.Applications, HEADERNAMES.priority, thisRow, newPriority);
+    }
   } catch(err) {
-    console.error(`${err} : Couldn't set priority`);
+    console.error(`${err}: Couldn't set priority for some reason...`);
   }
   
   // Flag for Toxic Project
   try {
-    const lastcolumn = sheet.getLastColumn();
-    const wholerow = sheet.getRange(lastRow, 1, 1, lastcolumn);
     if(toxicity == 'Yes') {
       SheetService.SetByHeader(SHEETS.Applications, HEADERNAMES.status, lastRow, STATUS.flagged);
-      wholerow.setBackground(null); // Unset previous color
-      wholerow.setBackground(COLORS.red);  // RED
-    } else wholerow.setBackground(null); // Unset previous color
+    }
   } catch(err) {
-    console.error(`${err} : Couldn't flag project for toxic bullshit.`);
+    console.error(`${err}: Couldn't flag project for toxic bullshit.`);
   }
   
   // Response
@@ -97,7 +93,7 @@ const onFormSubmit = async (e) => {
       message : message,
     });
   } catch(err) {
-    console.error(`${err} : Couldn't email for some reason`);
+    console.error(`${err}: Couldn't email for some reason`);
   }
 
 }
@@ -138,39 +134,28 @@ const onChange = async (e) => {
   let { status, ds, priority, timestamp, email, name, affiliation, pi, experience, exp_length, purpose, tooling, toxicity, other, sheetName, row } = rowData;
   console.info(rowData);
   
-  // ----------------------------------------------------------------------------------------------------------------
-  // Change colors of row based on Status
-  Colorizer.SetRowColorByStatus(SHEETS.Applications, thisRow, status);
-  
-  //----------------------------------------------------------------------------------------------------------------
   // Auto-Reject for toxicity
   try {
     if(toxicity == `Yes`) {
       SheetService.SetByHeader(SHEETS.Applications, HEADERNAMES.status, thisRow, STATUS.rejected);
     }
   } catch(err) {
-    console.error(`${err} : Couldn't reject toxic project for some reason...`);
+    console.error(`${err}: Couldn't reject toxic project for some reason...`);
   }
   
-  
-  //----------------------------------------------------------------------------------------------------------------
   // Check Student Type and set Priority
   try {
     if(!priority) {
       const p = new Priority({ studentType : studentType });
       const newPriority = p.priority;
-      const cellColor = p.cellcolor;
       SheetService.SetByHeader(SHEETS.Applications, HEADERNAMES.priority, thisRow, newPriority);
-      SheetService.GetCellByHeader(SHEETS.Applications, HEADERNAMES.priority, thisRow)
-        .setBackground(cellColor);
     }
   } catch(err) {
-    console.error(`${err} : Couldn't set priority for some reason...`);
+    console.error(`${err}: Couldn't set priority for some reason...`);
   }
   
   // Fix DS if missing
   ds = ds ? ds : Cody.name;
-  
   
   // Create a message
   const message = new CreateMessage({ name : name, designspecialist : ds });
@@ -182,10 +167,6 @@ const onChange = async (e) => {
     email : email,    
     message : message,
   });
-
-  // Check Color Again
-  const stat = SheetService.GetByHeader(SHEETS.Applications, HEADERNAMES.status, thisRow);
-  Colorizer.SetRowColorByStatus(SHEETS.Applications, thisRow, stat);
   
 }
 

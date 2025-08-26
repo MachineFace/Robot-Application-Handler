@@ -20,7 +20,7 @@ class SheetService {
       let forbiddenNames = Object.values(OTHERSHEETS).map(sheet => sheet.getSheetName());
       return !forbiddenNames.includes(thisSheetName);
     } catch(err) {
-      console.error(`"IsValidSheet()" failed : ${err}`);
+      console.error(`"IsValidSheet()" failed: ${err}`);
       return 1;
     }
   }
@@ -38,7 +38,7 @@ class SheetService {
       if (col == -1) throw new Error(`Getting data by header failed.`);
       return data[row - 1][col];
     } catch (err) {
-      console.error(`"GetByHeader()" failed : ${err} @ Sheet: ${sheet} Col Name: ${columnName} Row: ${row}`);
+      console.error(`"GetByHeader()" failed: ${err} @ Sheet: ${sheet} Col Name: ${columnName} Row: ${row}`);
       return 1;
     }
   }
@@ -80,7 +80,7 @@ class SheetService {
       sheet.getRange(row, col).setValue(val);
       return 0;
     } catch (err) {
-      console.error(`"SetByHeader()" failed : ${err} @ Sheet: ${sheet} Row: ${row}, Value: ${val}`);
+      console.error(`"SetByHeader()" failed: ${err} @ Sheet: ${sheet} Row: ${row}, Value: ${val}`);
       return 1;
     }
   }
@@ -100,7 +100,7 @@ class SheetService {
       colData.splice(0, 1); // Pop first item out.
       return colData;
     } catch (err) {
-      console.error(`"GetColumnDataByHeader()" failed : ${err}`);
+      console.error(`"GetColumnDataByHeader()" failed: ${err}`);
       return 1;
     }
   }
@@ -128,7 +128,7 @@ class SheetService {
       // console.info(dict);
       return dict;
     } catch (err) {
-      console.error(`"GetRowData()" failed : ${err}`);
+      console.error(`"GetRowData()" failed: ${err}`);
       return 1;
     }
   }
@@ -156,7 +156,7 @@ class SheetService {
       sheet.appendRow(values);
       return 0;
     } catch (err) {
-      console.error(`"SetRowData()" failed : ${err}`);
+      console.error(`"SetRowData()" failed: ${err}`);
       return 1;
     }
   }
@@ -184,7 +184,7 @@ class SheetService {
       sheet.appendRow(sorted);
       return 0;
     } catch (err) {
-      console.error(`"WriteNewRowData()" failed : ${err}`);
+      console.error(`"WriteNewRowData()" failed: ${err}`);
       return 1;
     }
   }
@@ -208,7 +208,7 @@ class SheetService {
       if (col == -1) return false;
       return range.some( row => row[0] === val);
     } catch (err) {
-      console.error(`"SearchColumn()" failed : ${err} @ Sheet: ${sheet} Col Name specified: ${columnName} value: ${val}`);
+      console.error(`"SearchColumn()" failed: ${err} @ Sheet: ${sheet} Col Name specified: ${columnName} value: ${val}`);
       return false;
     }
   }
@@ -261,7 +261,7 @@ class SheetService {
       if (finder == null) return false;
       return finder.getRow();
     } catch(err) {
-      console.error(`"SearchSpecificSheet()" failed : ${err}`);
+      console.error(`"SearchSpecificSheet()" failed: ${err}`);
       return 1;
     }
   }
@@ -287,7 +287,7 @@ class SheetService {
       // console.info(JSON.stringify(res));
       return res;
     } catch(err) {
-      console.error(`"Search()" failed : ${err}`);
+      console.error(`"Search()" failed: ${err}`);
       return 1;
     }
   }
