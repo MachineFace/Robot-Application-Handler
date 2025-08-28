@@ -25,7 +25,7 @@
  * =======================================================================================================================================================================
  * ON SUBMIT
  */
-const onFormSubmit = async (e) => {
+const handleSubmit = async (e) => {
   
   // Set status to RECEIVED on new submission
   const s = SpreadsheetApp.getActiveSpreadsheet();
@@ -106,7 +106,7 @@ const onFormSubmit = async (e) => {
  * =======================================================================================================================================================================
  * ON CHANGE
  */
-const onChange = async (e) => { 
+const handleChange = async (e) => { 
   const thisSheetName = e.range.getSheet().getSheetName();
   
   // Fetch Columns and rows and check validity
