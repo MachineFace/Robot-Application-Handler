@@ -71,7 +71,7 @@
 //       return 0;   
 //     } catch(err) {
 //       console.error(`${err} : Couldn't color rows for some reason`);
-//       return 1;
+//       return null;
 //     }
     
 //   }
@@ -121,7 +121,7 @@ const SetConditionalFormatting = () => {
     return 0;
   } catch(err) {
     console.error(`"SetConditionalFormatting()" failed: ${err}`);
-    return 1;
+    return null;
   }
 }
 

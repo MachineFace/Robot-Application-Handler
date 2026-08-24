@@ -64,7 +64,7 @@ class Emailer {
       return 0;
     } catch(err) {
       console.error(`"SendEmail()" failed: ${err}`);
-      return 1;
+      return null;
     }
 
   }
@@ -91,7 +91,7 @@ const SendEmail = ({
     return 0;
   } catch (err) {
     console.error(`"SendEmail()" failed: ${err}`);
-    return 1;
+    return null;
   }
 }
 
