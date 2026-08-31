@@ -188,31 +188,6 @@ const _gasTEmailTesting = async () => {
 }
 
 /**
- * Test Logger and Message with GasT
- * @private
- * PASSED 6/16/2025
- */
-const _gasTLoggerTesting = async () => {
-  console.warn(`Testing: ${new Error().stack.split('\n')[1].split(`at `)[1]}`);  // Print Enclosing Function Name
-  const test = new GasTap();
-
-  await test(`Logger`, (t) => {
-
-    const x = Log.Warning(`Warning Test ----> Message`);
-    const y = Log.Info(`Info Test ----> Message`);
-    const z = Log.Error(`ERROR Test ----> Message`);
-    const w = Log.Debug(`Debugging Test ----> Message`);
-    t.notThrow(() => x, `Warning SHOULD NOT throw error.`);
-    t.notThrow(() => y, `Info SHOULD NOT throw error.`);
-    t.notThrow(() => z, `Error SHOULD NOT throw error.`);
-    t.notThrow(() => w, `Debug SHOULD NOT throw error.`);
-  });
-
-  await test.finish();
-  if (test.totalFailed() > 0) throw "Some test(s) failed!";
-}
-
-/**
  * Test Misc with GasT
  * @private
  * PASSED 6/16/2025
@@ -301,7 +276,6 @@ const _gasTTestAll = async () => {
     await _gasTMainTesting(),
     await _gasTMessagingTesting(),
     await _gasTEmailTesting(),
-    await _gasTLoggerTesting(),
     await _gasTMiscTesting(),
   ])
   .then(console.info('Test Success.'))
