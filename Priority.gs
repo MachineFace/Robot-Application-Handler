@@ -45,7 +45,7 @@ class Priority {
       return await this.priority;
     } catch(err) {
       console.error(`${err}: Couldn't check or set priority for some reason...`);
-      return 0;
+      return null;
     }
     
   }

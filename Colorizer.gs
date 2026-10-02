@@ -68,7 +68,7 @@
 //           console.warn(`Status: ${status}, Set Color to : None`);
 //           break;
 //       }
-//       return 0;   
+//          
 //     } catch(err) {
 //       console.error(`${err} : Couldn't color rows for some reason`);
 //       return null;
@@ -118,7 +118,7 @@ const SetConditionalFormatting = () => {
       sheet.setConditionalFormatRules(rules);
       console.warn(`Conditional Formatting set for "${sheet.getSheetName()}"`);
     });
-    return 0;
+    
   } catch(err) {
     console.error(`"SetConditionalFormatting()" failed: ${err}`);
     return null;

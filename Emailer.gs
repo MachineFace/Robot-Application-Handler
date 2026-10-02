@@ -61,7 +61,7 @@ class Emailer {
         case undefined:
           break;
       }
-      return 0;
+      
     } catch(err) {
       console.error(`"SendEmail()" failed: ${err}`);
       return null;
@@ -88,7 +88,7 @@ const SendEmail = ({
       name: SERVICE_NAME,
     });
     Log.Warning(`"${status}" Email sent to student and status set to "${status}".`);
-    return 0;
+    
   } catch (err) {
     console.error(`"SendEmail()" failed: ${err}`);
     return null;
